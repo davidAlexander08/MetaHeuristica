@@ -26,6 +26,42 @@ Deficit = np.zeros(len(P))
 custo_deficit = 1000
 p = {unit:[0.0]*len(P) for unit in N}
 
+
+
+
+
+Hydros = ["H1"]
+Terms = ["T1", "T2"]
+N = Hydros + Terms 
+P = [1,2,3]
+Custo = {"H1": 0, "H2":0, "T1": 10, "T2":20}
+LimSup = {"H1": 200, "H2":200, "T1": 100, "T2":100}
+Demanda = np.array([100, 200, 250])
+Afluencia = {"H1":[100, 50, 0], "H2":[100, 50, 0]}
+Armazenamento_orig = {"H1":[0,0,0], "H2":[0,0,0]}
+Armazenamento_min = {"H1":[0,0,0], "H2":[0,0,0]}
+Armazenamento_max = {"H1":[999,999,999], "H2":[999,999,999]}
+Deficit = np.zeros(len(P))
+custo_deficit = 1000
+p = {unit:[0.0]*len(P) for unit in N}
+
+
+
+Hydros = ["H1", "H2"]
+Terms = ["T1", "T2"]
+N = Hydros + Terms 
+P = [1,2,3]
+Custo = {"H1": 0, "H2":1, "T1": 10, "T2":20}
+LimSup = {"H1": 200, "H2":200, "T1": 100, "T2":100}
+Demanda = np.array([100, 200, 300])
+Afluencia = {"H1":[100, 50, 0], "H2":[150, 0, 0]}
+Armazenamento_orig = {"H1":[0,0,0], "H2":[0,0,0]}
+Armazenamento_min = {"H1":[0,0,0], "H2":[0,0,0]}
+Armazenamento_max = {"H1":[999,999,999], "H2":[999,999,999]}
+Deficit = np.zeros(len(P))
+custo_deficit = 1000
+p = {unit:[0.0]*len(P) for unit in N}
+
 # --------------------------
 # Função objetivo
 # --------------------------
@@ -34,27 +70,31 @@ def total_cost(p, defic):
     cost += sum(custo_deficit*defic[t]for t in range(len(P)))  # custo de déficit
     return cost
 
-def solucao_gulosa(p_g, flag, usina, t):
+def solucao_gulosa(p_g, flag, usina, t_perturba):
     Deficit_g = copy.deepcopy(Deficit)
     Armazenamento_g = copy.deepcopy(Armazenamento_orig)
     ordem_menor_termica_maior_termica = sorted(Custo, key=Custo.get)
-    N_linha = N.copy()
+    N_linha = copy.deepcopy(N)
     if(flag == 1):
-        N_linha.remove(usina)
+        for usi in usina:
+            N_linha.remove(usi)
     for t in range(len(P)):
-        total_gen = 0 if flag == 0 else  p_g[usina][t]
+        total_gen = 0 
+        if(flag == 1):
+            total_gen  += p_g[usi][t]
+
         for unit in N_linha:
             if unit in Hydros:
+                #print("unit: ", unit)
                 Armazenamento_g[unit][t] = Armazenamento_g[unit][t] + Afluencia[unit][t]
                 #print("Armazenamento_g[unit][t]: ", Armazenamento_g[unit][t])
                 if (total_gen != Demanda[t]):
+                    geracao = 0
                     geracao = min(LimSup[unit], Armazenamento_g[unit][t], Demanda[t]- total_gen)
                     p_g[unit][t] = geracao
                     Armazenamento_g[unit][t] = Armazenamento_g[unit][t] - geracao
-                    if(t+1 != len(P)):
-                        Armazenamento_g[unit][t+1] = Armazenamento_g[unit][t]
-                    #else:
-                        #print("VERTEU: ", Armazenamento_g[unit][t])
+                if(t+1 != len(P)):
+                    Armazenamento_g[unit][t+1] = Armazenamento_g[unit][t]
                 else:
                     p_g[unit][t] = 0
             else:
@@ -73,56 +113,61 @@ def solucao_gulosa(p_g, flag, usina, t):
 # --------------------------
 def neighbor(p_n, Deficit_n, Armazenamento_n):
     # Cria cópias da solução atual
+
     p_new = copy.deepcopy(p_n)
     deficit_new = copy.deepcopy(Deficit_n)
     Armazenamento_new = copy.deepcopy(Armazenamento_n)
 
     # Escolhe período aleatório para alterar
-    t = random.randint(0, len(P)-1)
-    # Escolhe unidade aleatória para alterar
+    t = random.choice(P)-1
     unit = random.choice(N)
+    delta = random.randint(-10, 10)
+    #delta = random.uniform(-3, 3)
 
-    # Perturbação aleatória (subir ou descer geração)
-    delta = random.randint(-10, 10)  # por exemplo ±10 MW
-    #delta = 0
-    #unit = "H1"
+    #unit = "H2"
     #t = 1
-    #unit = "H1"
-    #delta = 10
+    #delta = -1
+
     #print("delta: ", delta, " t: ", t, " unit: ", unit)
-    #print("pnew: ", p_new)
-    #print("deficit_new: ", deficit_new)
-    #print("Armazenamento_new: ", Armazenamento_new)
+
 
     p_new[unit][t] = p_new[unit][t] + delta 
 
+
     if(p_new[unit][t] < 0):
-        p_new[unit][t] = p[unit][t]
+        p_new = copy.deepcopy(p_n)
         delta = 0
     if(p_new[unit][t] > LimSup[unit]):
-        p_new[unit][t] = p[unit][t]
+        p_new = copy.deepcopy(p_n)
         delta = 0
     
     if(p_new[unit][t] > Demanda[t]):
-        p_new[unit][t] = p[unit][t]
+        p_new = copy.deepcopy(p_n)
         delta = 0
 
-    if(unit in Hydros):
-        indices = range(len(P)) 
-        energia_disponivel_hidro = sum(Afluencia[unit][t] for t in indices) + sum(Armazenamento_orig[unit][t] for t in indices)
-        energia_geracao_hidro = sum(p_new[unit][t] for t in indices)  
-        if(energia_geracao_hidro > energia_disponivel_hidro):
-            p_new[unit][t] = p[unit][t]
-            Armazenamento_new[unit][t] = Armazenamento_n[unit][t] 
 
-        Armazenamento_new[unit][t] = Armazenamento_n[unit][t] - delta
-        if(Armazenamento_new[unit][t] > Armazenamento_max[unit][t]):
-            p_new[unit][t] = p[unit][t]
-            Armazenamento_new[unit][t] = Armazenamento_n[unit][t] 
-        if(Armazenamento_new[unit][t] < Armazenamento_min[unit][t]):
-            p_new[unit][t] = p[unit][t]
-            Armazenamento_new[unit][t] = Armazenamento_n[unit][t] 
-    p_new, deficit_new, Armazenamento_new = solucao_gulosa(copy.deepcopy(p_new), 1, unit, t)
+    if(unit in Hydros):
+        P_linha = P.copy()
+        P_linha.remove(t+1)
+        t_linha = random.choice(P_linha)-1
+        p_new[unit][t_linha] = p_new[unit][t_linha] - delta 
+
+        if(p_new[unit][t_linha] < 0):
+            p_new = copy.deepcopy(p_n)
+            delta = 0
+        if(p_new[unit][t_linha] > LimSup[unit]):
+            p_new = copy.deepcopy(p_n)
+            delta = 0
+        
+        if(p_new[unit][t_linha] > Demanda[t_linha]):
+            p_new = copy.deepcopy(p_n)
+            delta = 0
+
+    p_new, deficit_new, Armazenamento_new = solucao_gulosa(copy.deepcopy(p_new), 1, [unit], t)
+    #print("p_new: ", p_new)
+    #print("deficit_new: ", deficit_new)
+    #print("Armazenamento_new: ", Armazenamento_new)
+    #exit(1)
     return p_new, deficit_new, Armazenamento_new
 
 
@@ -130,8 +175,14 @@ def neighbor(p_n, Deficit_n, Armazenamento_n):
 # Simulated Annealing
 # --------------------------
 
-def simulated_annealing(T0=1000.0, alpha=0.9, n_iter=150):
+def simulated_annealing(T0=10000.0, alpha=0.9, n_iter=500):
     p_best, def_best, armazenamento_best = solucao_gulosa(copy.deepcopy(p), 0, "0", 0)
+    print("##############################")
+    print("p_best: ", p_best)
+    print("def_best: ", def_best)
+    print("armazenamento_best: ", armazenamento_best)
+    print("Demanda: ", Demanda)
+
     cost_best = total_cost(p_best, def_best)
     p_curr, def_curr, armaz_curr = copy.deepcopy(p_best), copy.deepcopy(def_best), copy.deepcopy(armazenamento_best)
     cost_curr = cost_best
@@ -140,19 +191,26 @@ def simulated_annealing(T0=1000.0, alpha=0.9, n_iter=150):
     for iter in range(n_iter):
         p_new, def_new, armaz_new = neighbor(copy.deepcopy(p_curr), copy.deepcopy(def_curr), copy.deepcopy(armaz_curr))
         cost_new = total_cost(p_new, def_new)
-        #exit(1)
+        #print("##############################")
+        #print("iter: ", iter)
+        #print("p_new: ", p_new)
+        #print("def_new: ", def_new)
+        #print("armaz_new: ", armaz_new)
+        #print("cost_new: ", cost_new)
+        #print("Demanda: ", Demanda)
         delta_fob = cost_new - cost_curr   
         if delta_fob < 0 or random.random() < np.exp(-delta_fob/T):
             p_curr, def_curr, armaz_curr, cost_curr = p_new, def_new, armaz_new, cost_new
             iteracoes[iter] = cost_new
-            print("##############################")
-            print("iter: ", iter)
-            print("p_new: ", p_new)
-            print("def_new: ", def_new)
-            print("armaz_new: ", armaz_new)
-            print("cost_new: ", cost_new)
-            print("Demanda: ", Demanda)
+
             if cost_curr < cost_best:
+                print("##############################")
+                print("iter: ", iter)
+                print("p_new: ", p_new)
+                print("def_new: ", def_new)
+                print("armaz_new: ", armaz_new)
+                print("cost_new: ", cost_new)
+                print("Demanda: ", Demanda)
                 p_best, def_best, armazenamento_best, cost_best = p_curr.copy(), def_curr.copy(), armaz_curr.copy(), cost_curr
         T *= alpha
     return p_best, def_best, armazenamento_best, cost_best, iteracoes
@@ -214,14 +272,14 @@ print("Summary written to summary_uc_SA.csv")
 # --------------------------
 # Plot dispatch
 # --------------------------
-plt.figure(figsize=(10,6))
-plt.plot(df_summary["Period"], df_summary["Demand"], label="Demand", lw=2)
-plt.plot(df_summary["Period"], df_summary["TotalGen"], label="Total Generation", lw=2)
-plt.xlabel("Period")
-plt.ylabel("MW")
-plt.title("Dispatch via Simulated Annealing")
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.savefig("dispatch_plot_SA.png")
-plt.show()
+#plt.figure(figsize=(10,6))
+#plt.plot(df_summary["Period"], df_summary["Demand"], label="Demand", lw=2)
+#plt.plot(df_summary["Period"], df_summary["TotalGen"], label="Total Generation", lw=2)
+#plt.xlabel("Period")
+#plt.ylabel("MW")
+#plt.title("Dispatch via Simulated Annealing")
+#plt.legend()
+#plt.grid(True)
+#plt.tight_layout()
+#plt.savefig("dispatch_plot_SA.png")
+#plt.show()

@@ -21,6 +21,24 @@ penalty_deficit = 1000.0
 Afluencia = Dict("H1" => [100.0, 50.0, 0.0])
 Armazenamento_inicial = Dict("H1" => 0.0)
 
+
+#############################################
+Hydros = ["H1","H2"]
+Terms = ["T1","T2"]
+N = Hydros ∪ Terms
+P = 1:3
+
+# Dados
+Demanda = [100.0, 200.0, 250.0]
+Custo = Dict("H1" => 0.0, "H2"=> 0.0 ,"T1" => 10.0, "T2" => 20.0)
+LimiteSup = Dict("H1" => 200.0, "H2"=>200,  "T1" => 100.0, "T2"=>100)
+LimiteInf = Dict("H1" => 0.0, "H2" => 0,  "T1" => 0.0, "T2" => 0)
+penalty_deficit = 1000.0
+
+Afluencia = Dict("H1" => [100.0, 50.0, 0.0], "H2" =>[100, 50, 0])
+Armazenamento_inicial = Dict("H1" => 0.0, "H2" => 0)
+
+
 # Modelo
 model = Model(GLPK.Optimizer)
 set_silent(model)
