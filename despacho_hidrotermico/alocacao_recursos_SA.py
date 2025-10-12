@@ -5,6 +5,23 @@ import matplotlib.pyplot as plt
 import copy
 import plotly.graph_objects as go
 
+
+Hydros = []
+Terms = ["T1", "T2"]
+N = Hydros + Terms 
+P = [1,2,3]
+Custo = {"H1": 0, "T1": 10, "T2":20}
+LimSup = {"H1": 200, "T1": 100, "T2":50}
+Demanda = np.array([50, 100, 150])
+Afluencia = {"H1":[100, 50, 0]}
+Armazenamento_orig = {"H1":[0,0,0]}
+Armazenamento_min = {"H1":[0,0,0]}
+Armazenamento_max = {"H1":[999,999,999]}
+Deficit = np.zeros(len(P))
+custo_deficit = 1000
+p = {unit:[0.0]*len(P) for unit in N}
+
+
 #random.seed(1)
 #np.random.seed(1)
 
@@ -30,37 +47,37 @@ p = {unit:[0.0]*len(P) for unit in N}
 
 
 
-Hydros = ["H1"]
-Terms = ["T1", "T2"]
-N = Hydros + Terms 
-P = [1,2,3]
-Custo = {"H1": 0, "H2":0, "T1": 10, "T2":20}
-LimSup = {"H1": 200, "H2":200, "T1": 100, "T2":100}
-Demanda = np.array([100, 200, 250])
-Afluencia = {"H1":[100, 50, 0], "H2":[100, 50, 0]}
-Armazenamento_orig = {"H1":[0,0,0], "H2":[0,0,0]}
-Armazenamento_min = {"H1":[0,0,0], "H2":[0,0,0]}
-Armazenamento_max = {"H1":[999,999,999], "H2":[999,999,999]}
-Deficit = np.zeros(len(P))
-custo_deficit = 1000
-p = {unit:[0.0]*len(P) for unit in N}
+#Hydros = ["H1"]
+#Terms = ["T1", "T2"]
+#N = Hydros + Terms 
+#P = [1,2,3]
+#Custo = {"H1": 0, "H2":0, "T1": 10, "T2":20}
+#LimSup = {"H1": 200, "H2":200, "T1": 100, "T2":100}
+#Demanda = np.array([100, 200, 250])
+#Afluencia = {"H1":[100, 50, 0], "H2":[100, 50, 0]}
+#Armazenamento_orig = {"H1":[0,0,0], "H2":[0,0,0]}
+#Armazenamento_min = {"H1":[0,0,0], "H2":[0,0,0]}
+#Armazenamento_max = {"H1":[999,999,999], "H2":[999,999,999]}
+#Deficit = np.zeros(len(P))
+#custo_deficit = 1000
+#p = {unit:[0.0]*len(P) for unit in N}
 
 
 
-Hydros = ["H1", "H2"]
-Terms = ["T1", "T2"]
-N = Hydros + Terms 
-P = [1,2,3]
-Custo = {"H1": 0, "H2":1, "T1": 10, "T2":20}
-LimSup = {"H1": 200, "H2":200, "T1": 100, "T2":100}
-Demanda = np.array([100, 200, 300])
-Afluencia = {"H1":[100, 50, 0], "H2":[150, 0, 0]}
-Armazenamento_orig = {"H1":[0,0,0], "H2":[0,0,0]}
-Armazenamento_min = {"H1":[0,0,0], "H2":[0,0,0]}
-Armazenamento_max = {"H1":[999,999,999], "H2":[999,999,999]}
-Deficit = np.zeros(len(P))
-custo_deficit = 1000
-p = {unit:[0.0]*len(P) for unit in N}
+#Hydros = ["H1", "H2"]
+#Terms = ["T1", "T2"]
+#N = Hydros + Terms 
+#P = [1,2,3]
+#Custo = {"H1": 0, "H2":1, "T1": 10, "T2":20}
+#LimSup = {"H1": 200, "H2":200, "T1": 100, "T2":100}
+#Demanda = np.array([100, 200, 300])
+#Afluencia = {"H1":[100, 50, 0], "H2":[150, 0, 0]}
+#Armazenamento_orig = {"H1":[0,0,0], "H2":[0,0,0]}
+#Armazenamento_min = {"H1":[0,0,0], "H2":[0,0,0]}
+#Armazenamento_max = {"H1":[999,999,999], "H2":[999,999,999]}
+#Deficit = np.zeros(len(P))
+#custo_deficit = 1000
+#p = {unit:[0.0]*len(P) for unit in N}
 
 # --------------------------
 # Função objetivo
@@ -121,7 +138,7 @@ def neighbor(p_n, Deficit_n, Armazenamento_n):
     # Escolhe período aleatório para alterar
     t = random.choice(P)-1
     unit = random.choice(N)
-    delta = random.randint(-10, 10)
+    delta = random.randint(-20, 20)
     #delta = random.uniform(-3, 3)
 
     #unit = "H2"
@@ -175,34 +192,97 @@ def neighbor(p_n, Deficit_n, Armazenamento_n):
 # Simulated Annealing
 # --------------------------
 
-def simulated_annealing(T0=10000.0, alpha=0.9, n_iter=500):
+def simulated_annealing(T0=100.0, alpha=0.95, n_iter=100, Tf = 1):
     p_best, def_best, armazenamento_best = solucao_gulosa(copy.deepcopy(p), 0, "0", 0)
-    print("##############################")
-    print("p_best: ", p_best)
-    print("def_best: ", def_best)
-    print("armazenamento_best: ", armazenamento_best)
-    print("Demanda: ", Demanda)
-
+    custo_guloso = total_cost(p_best, def_best)
     cost_best = total_cost(p_best, def_best)
     p_curr, def_curr, armaz_curr = copy.deepcopy(p_best), copy.deepcopy(def_best), copy.deepcopy(armazenamento_best)
     cost_curr = cost_best
+    print("###SOL GULOSA")
+    print("p_best: ", p_best)
+    print("custo_guloso: ", custo_guloso)
     T = T0
-    iteracoes = {}
+    lista_df = []
+    df = pd.DataFrame(
+        {
+            "Temperatura":[T],
+            "Iteracao":[0],
+            "Custo_Total":[custo_guloso]
+        }
+    )
+    lista_df.append(df)
+    
+    
+    while T > Tf:
+        for iter in range(n_iter):
+            p_new, def_new, armaz_new = neighbor(copy.deepcopy(p_curr), copy.deepcopy(def_curr), copy.deepcopy(armaz_curr))
+            cost_new = total_cost(p_new, def_new)
+            delta_fob = cost_new - cost_curr   
+            if delta_fob < 0:
+                p_curr, def_curr, armaz_curr, cost_curr = copy.deepcopy(p_new), copy.deepcopy(def_new), copy.deepcopy(armaz_new), cost_new
+                df = pd.DataFrame(
+                    {
+                        "Temperatura":[T],
+                        "Iteracao":[iter],
+                        "Custo_Total":[cost_new]
+                    }
+                )
+                lista_df.append(df)
+                if cost_curr < cost_best:
+                    print("##############################")
+                    print("iter: ", iter)
+                    print("p_new: ", p_new)
+                    print("def_new: ", def_new)
+                    print("armaz_new: ", armaz_new)
+                    print("cost_new: ", cost_new)
+                    print("Demanda: ", Demanda)
+                    p_best, def_best, armazenamento_best, cost_best = copy.deepcopy(p_curr), copy.deepcopy(def_curr), copy.deepcopy(armaz_curr), cost_curr
+            else:
+                if(random.random() < np.exp(-delta_fob/T)):
+                    df = pd.DataFrame(
+                        {
+                            "Temperatura":[T],
+                            "Iteracao":[iter],
+                            "Custo_Total":[cost_new]
+                        }
+                    )
+                    lista_df.append(df)
+                    p_curr, def_curr, armaz_curr, cost_curr = copy.deepcopy(p_new), copy.deepcopy(def_new), copy.deepcopy(armaz_new), cost_new
+        T *= alpha
+    df_fim = pd.concat(lista_df).reset_index(drop = True)
+    return p_best, def_best, armazenamento_best, cost_best, df_fim 
+
+def ILS(n_iter=100):
+    p_best, def_best, armazenamento_best = solucao_gulosa(copy.deepcopy(p), 0, "0", 0)
+    custo_guloso = total_cost(p_best, def_best)
+    cost_best = total_cost(p_best, def_best)
+    p_curr, def_curr, armaz_curr = copy.deepcopy(p_best), copy.deepcopy(def_best), copy.deepcopy(armazenamento_best)
+    cost_curr = cost_best
+    print("###SOL GULOSA")
+    print("p_best: ", p_best)
+    print("custo_guloso: ", custo_guloso)
+    lista_df = []
+    df = pd.DataFrame(
+        {
+            "Iteracao":[0],
+            "Custo_Total":[custo_guloso]
+        }
+    )
+    lista_df.append(df)
+
     for iter in range(n_iter):
         p_new, def_new, armaz_new = neighbor(copy.deepcopy(p_curr), copy.deepcopy(def_curr), copy.deepcopy(armaz_curr))
         cost_new = total_cost(p_new, def_new)
-        #print("##############################")
-        #print("iter: ", iter)
-        #print("p_new: ", p_new)
-        #print("def_new: ", def_new)
-        #print("armaz_new: ", armaz_new)
-        #print("cost_new: ", cost_new)
-        #print("Demanda: ", Demanda)
         delta_fob = cost_new - cost_curr   
-        if delta_fob < 0 or random.random() < np.exp(-delta_fob/T):
-            p_curr, def_curr, armaz_curr, cost_curr = p_new, def_new, armaz_new, cost_new
-            iteracoes[iter] = cost_new
-
+        if delta_fob < 0:
+            p_curr, def_curr, armaz_curr, cost_curr = copy.deepcopy(p_new), copy.deepcopy(def_new), copy.deepcopy(armaz_new), cost_new
+            df = pd.DataFrame(
+                {
+                    "Iteracao":[iter],
+                    "Custo_Total":[cost_new]
+                }
+            )
+            lista_df.append(df)
             if cost_curr < cost_best:
                 print("##############################")
                 print("iter: ", iter)
@@ -211,29 +291,25 @@ def simulated_annealing(T0=10000.0, alpha=0.9, n_iter=500):
                 print("armaz_new: ", armaz_new)
                 print("cost_new: ", cost_new)
                 print("Demanda: ", Demanda)
-                p_best, def_best, armazenamento_best, cost_best = p_curr.copy(), def_curr.copy(), armaz_curr.copy(), cost_curr
-        T *= alpha
-    return p_best, def_best, armazenamento_best, cost_best, iteracoes
+                p_best, def_best, armazenamento_best, cost_best = copy.deepcopy(p_curr), copy.deepcopy(def_curr), copy.deepcopy(armaz_curr), cost_curr
+    df_fim = pd.concat(lista_df).reset_index(drop = True)
+    return p_best, def_best, armazenamento_best, cost_best, df_fim 
 
-# --------------------------
-# Executar SA
-# --------------------------
-p_sol, def_sol, armaz_sol, cost_sol, iteracoes = simulated_annealing()
+#EXECUTA ILS
+
+p_sol, def_sol, armaz_sol, cost_sol, df_fim = ILS()
 print("Objective (total cost) via SA:", cost_sol)
 print("p_sol: ", p_sol)
 print("def_sol: ", def_sol)
 print("armaz_sol: ", armaz_sol)
-print("iter: ", iteracoes)
+print(df_fim)
 
-# Convert to sorted lists for plotting
-iterations = sorted(iteracoes.keys())
-costs = [iteracoes[i] for i in iterations]
 
 # Create Plotly line plot
 fig = go.Figure()
 fig.add_trace(go.Scatter(
-    x=iterations,
-    y=costs,
+    x=df_fim["Iteracao"],
+    y=df_fim["Custo_Total"],
     mode='lines+markers',
     line=dict(width=3, color='royalblue'),
     marker=dict(size=8),
@@ -241,7 +317,7 @@ fig.add_trace(go.Scatter(
 ))
 
 fig.update_layout(
-    title="Evolution of Best Cost (Simulated Annealing)",
+    title=f"ILS",
     xaxis_title="Iteration",
     yaxis_title="Objective Function Value",
     template="plotly_white",
@@ -250,8 +326,50 @@ fig.update_layout(
     height=500
 )
 
-fig.write_html("sa_best_cost.html", include_plotlyjs='cdn')
+fig.write_html(f"sa_best_cost_ILS.html", include_plotlyjs='cdn')
 print("Plot saved as sa_best_cost.html")
+
+
+# --------------------------
+# Executar SA
+# --------------------------
+
+
+p_sol, def_sol, armaz_sol, cost_sol, df_fim = simulated_annealing()
+print("Objective (total cost) via SA:", cost_sol)
+print("p_sol: ", p_sol)
+print("def_sol: ", def_sol)
+print("armaz_sol: ", armaz_sol)
+print(df_fim)
+
+
+
+temperaturas = df_fim["Temperatura"].unique()
+for temperatura in temperaturas:
+    # Create Plotly line plot
+    df_plot = df_fim.loc[(df_fim["Temperatura"] == temperatura)].reset_index(drop = True)
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df_plot["Iteracao"],
+        y=df_plot["Custo_Total"],
+        mode='lines+markers',
+        line=dict(width=3, color='royalblue'),
+        marker=dict(size=8),
+        name="Best Cost"
+    ))
+
+    fig.update_layout(
+        title=f"S.A. Temperatura {temperatura}",
+        xaxis_title="Iteration",
+        yaxis_title="Objective Function Value",
+        template="plotly_white",
+        font=dict(size=14),
+        width=800,
+        height=500
+    )
+
+    fig.write_html(f"sa_best_cost_{temperatura}.html", include_plotlyjs='cdn')
+    print("Plot saved as sa_best_cost.html")
 
 # --------------------------
 # Exportar resultados
