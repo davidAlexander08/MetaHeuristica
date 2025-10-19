@@ -21,15 +21,14 @@ geracoes = {unit:[0.0]*len(P) for unit in N}
 TON = {"T1": 2, "T2": 2, "T3":2}
 Toff = {"T1": 1, "T2": 1, "T3":1}
 UnitCommitment = {"T1": np.zeros(8), "T2": np.zeros(8), "T3": np.zeros(8)}
-#random.seed(1)
-#np.random.seed(1)
+
 
 
 Terms = ["T1", "T2", "T3"]
 N = Terms 
 P = [1,2,3,4,5,6,7,8]
 Custo = {"T1": 10, "T2":20, "T3":30}
-LimSup = {"T1": 100, "T2":50, "T3":100}
+LimSup = {"T1": 100, "T2":100, "T3":100}
 LimInf = {"T1": 10, "T2":30, "T3": 10}
 Demanda = np.array([90, 90, 110, 90, 90, 90, 90, 90])
 geracoes = {unit:[0.0]*len(P) for unit in N}
@@ -45,6 +44,8 @@ def total_cost(p):
     return cost
 
 def consecutive_ones(v, pos):
+    lista = []
+    lista.append(pos)
     if v[pos] == 0:
         return 0
 
@@ -52,16 +53,18 @@ def consecutive_ones(v, pos):
     # Left side
     i = pos - 1
     while i >= 0 and v[i] == 1:
+        lista.append(i)
         count += 1
         i -= 1
 
     # Right side
     i = pos + 1
     while i < len(v) and v[i] == 1:
+        lista.append(i)
         count += 1
         i += 1
 
-    return count
+    return count, lista
 
 def atualiza_demanda_liquida(dic_geracao, vetor_usinas):
     geracao_total = np.array([0.0]*len(P))
@@ -133,23 +136,12 @@ def adequa_balanco_potencia_guloso(unit_commitment_entrada):
     p_solucao_relaxada = copy.deepcopy(geracoes)
     ordem_menor_termica_maior_termica = sorted(Custo, key=Custo.get)
     N_linha = copy.deepcopy(ordem_menor_termica_maior_termica)
-    inviavel = False
     for t in range(len(P)):
         lista_caminho_usinas =[]
         for unit in N_linha:
             lista_caminho_usinas.append(unit)
             demanda_liquida = atualiza_demanda_liquida(p_solucao_relaxada, ordem_menor_termica_maior_termica)  
             if(unit_commitment_entrada[unit][t] == 1):
-                ton_consecutivos = consecutive_ones(unit_commitment_entrada[unit], t)
-                inviavel = True if ton_consecutivos < TON[unit] else False
-                if(inviavel):
-                    df = pd.concat(
-                        [pd.DataFrame(unit_commitment_entrada)],
-                        axis=1  # concatena colunas
-                    )
-                    print(df.round(1))
-                    print("CUSTO TOTAL: ", total_cost(p_solucao_relaxada))
-                    return p_solucao_relaxada, inviavel
                 #print("unit: ", unit, " ", consecutive_ones(unit_commitment_entrada[unit], t))
                 geracao = max(min(LimSup[unit], demanda_liquida[t]),LimInf[unit])
                 p_solucao_relaxada = verifica_resolve_inviabilidade(demanda_liquida, p_solucao_relaxada, lista_caminho_usinas)
@@ -160,12 +152,14 @@ def adequa_balanco_potencia_guloso(unit_commitment_entrada):
         [pd.DataFrame(p_solucao_relaxada), pd.DataFrame(unit_commitment_entrada)],
         axis=1  # concatena colunas
     )
+    demanda_liquida = atualiza_demanda_liquida(p_solucao_relaxada, ordem_menor_termica_maior_termica) 
     df['DemandaLiquida'] = demanda_liquida
     df['Demanda'] = Demanda
     print(df.round(1))
-    print("############################")
     print("CUSTO TOTAL: ", total_cost(p_solucao_relaxada))
-    return p_solucao_relaxada, inviavel
+    print("############################")
+
+    return p_solucao_relaxada
 
 potencia, unit_commitment = solucao_gulosa()
 #UnitCommitment = {"T1": [1,1,1,1,1,1,1,1], "T2": np.zeros(8), "T3": [0,0,1,1,0,1,0,0]}
@@ -184,50 +178,110 @@ def reset_unit(unit_n):
 # --------------------------
 # Variação de solução (neighbor)
 # --------------------------
+#random.seed(4)
+#np.random.seed(2)
+
 def neighbor(unit_n):
     # Cria cópias da solução atual
-    print("ESCOLHENDO VIZINHO")
+    #print("ESCOLHENDO VIZINHO")
     # Escolhe período aleatório para alterar
     inviavel = True
     contador = 0
     while inviavel == True:
         unit_new = copy.deepcopy(unit_n)
         t = random.choice(P)-1
-        unit = random.choice(N)
-        unit_new[unit][t] = 1 - unit_new[unit][t]
-        print("t: ",t, " unit: ", unit)
-        print("unit_new: ", unit_new)
-        print("contador: ", contador)
-        ton_unit = TON[unit]
+        lista_usinas_ligadas_periodo = []
+        lista_usinas_desligadas_periodo = []
+        capacidade_instalada_periodo = 0
+        for unit in N:
+            if(unit_new[unit][t] == 1):
+                lista_usinas_ligadas_periodo.append(unit)
+                capacidade_instalada_periodo += LimSup[unit]
+            else:
+                lista_usinas_desligadas_periodo.append(unit)
 
+        if(len(lista_usinas_ligadas_periodo) != 0 and len(lista_usinas_desligadas_periodo) != 0):
+            unit_a_ser_desligada = random.choice(lista_usinas_ligadas_periodo)
+            ton_consecutivos, lista_consecutivos  = consecutive_ones(unit_new[unit_a_ser_desligada], t)
+            capacidade_instalada_periodo -= LimSup[unit_a_ser_desligada]
 
-        potencia, inviavel  = adequa_balanco_potencia_guloso(unit_new)
-        #print("unit_new: ", unit_new)
-        #if(inviavel):
-        #    unit_new[unit][t] = 1 - unit_new[unit][t]
-        print("inviavel: ", inviavel)
-        print("#########################")
-        contador += 1
-        
-        if(contador == 2):
-            exit(1)
-    return potencia, unit_new
+            for i in lista_consecutivos:
+                unit_new[unit_a_ser_desligada][i] = 0
+                aux_usinas_desligadas_periodo = lista_usinas_desligadas_periodo.copy()
+                while capacidade_instalada_periodo < Demanda[i]:
+                    unit_a_ser_ligada = random.choice(aux_usinas_desligadas_periodo)
+                    aux_usinas_desligadas_periodo.remove(unit_a_ser_ligada)
+                    capacidade_instalada_periodo += LimSup[unit_a_ser_ligada]
+                    for j in range(i, min(i + TON[unit_a_ser_ligada], len(P))):
+                        unit_new[unit_a_ser_ligada][j] = 1
+
+            lista_inviavel = []
+            for periodo in range(0,len(P)):
+                #print("periodo: ", periodo, " P: ", P,  " len(P): ", len(P))
+                capacidade_instalada_per = 0
+                for unit in N:
+                    capacidade_instalada_per += LimSup[unit]*unit_new[unit][periodo]
+                    if(unit_new[unit][periodo] == 1):
+                        ton_consecutivos, lista_consecutivos = consecutive_ones(unit_new[unit], periodo)
+                        inviavel = True if ton_consecutivos < TON[unit] else False
+                        if(inviavel):
+                            if(P[periodo] + TON[unit] > max(P)):
+                                excedente = P[periodo] + TON[unit] - max(P) - 1
+                                if(ton_consecutivos == TON[unit] - excedente):
+                                        inviavel = False               
+                if(capacidade_instalada_per - Demanda[periodo] < 0):
+                    inviavel = True
+                lista_inviavel.append(inviavel)
+            
+                #print("unit_new: ", unit_new)
+                    #print("capacidade_instalada_per: ", capacidade_instalada_per, " Demanda[t]: ", Demanda[t], " capacidade_instalada_per - Demanda[t]: ", capacidade_instalada_per - Demanda[t])
+                #print("inviavel: ", inviavel, " t: ",t ," capacidade_instalada_periodo: ", capacidade_instalada_periodo, " demanda: ", Demanda[t])
+
+                #unit_new[unit][t] = 1 - unit_new[unit][t]
+                #print("t: ",t, " unit: ", unit)
+                #print("unit_new: ", unit_new)
+                #print("contador: ", contador)
+                #unit_new = {"T1":[1,1,1,1,1,1,1,0], 
+                #            "T2":[0,0,1,1,1,1,1,1],
+                #            "T3":[0,0,0,0,0,0,0,1]}
+            
+                #unit_new = {"T1":[1,1,1,1,1,1,1,1], 
+                #            "T2":[0,0,0,0,0,0,0,0],
+                #            "T3":[0,0,1,1,0,0,0,0]}
+            valida_inviabilidades_unit_commitment = sum(lista_inviavel)
+            if(valida_inviabilidades_unit_commitment == 0):
+                print("unit_new: ", unit_new)
+                potencia  = adequa_balanco_potencia_guloso(unit_new)
+                return potencia, unit_new
+            else:
+                inviavel = True
+            #print("unit_new: ", unit_new)
+            #if(inviavel):
+            #    unit_new[unit][t] = 1 - unit_new[unit][t]
+            #print("inviavel: ", inviavel)
+            #print("#########################")
+            contador += 1
+            #if(contador == 1):
+            #    exit(1)
+    
 
 
 # --------------------------
 # Simulated Annealing
 # --------------------------
 
-def simulated_annealing(T0=100.0, alpha=0.95, n_iter=100, Tf = 1):
+def simulated_annealing(T0=100.0, alpha=0.95, n_iter=2, Tf = 90):
     p_best, unit_best = solucao_gulosa()
     custo_guloso = total_cost(p_best)
     cost_best = total_cost(p_best)
     p_curr = copy.deepcopy(p_best)
     unit_curr = copy.deepcopy(unit_best)
     cost_curr = cost_best
-    print("###SOL GULOSA")
+    print("#################")
+    print("SOL GULOSA")
     print("p_best: ", p_best)
     print("custo_guloso: ", custo_guloso)
+    print("#################")
     T = T0
     lista_df = []
     df = pd.DataFrame(
@@ -239,14 +293,15 @@ def simulated_annealing(T0=100.0, alpha=0.95, n_iter=100, Tf = 1):
     )
     lista_df.append(df)
     
-    
     while T > Tf:
         for iter in range(n_iter):
+            print("T: ", T, " iter: ", iter)
             p_new, unit_new = neighbor(copy.deepcopy(unit_curr))
             cost_new = total_cost(p_new)
-            delta_fob = cost_new - cost_curr   
+            delta_fob = cost_new - cost_curr  
             if delta_fob < 0:
                 p_curr, unit_curr, cost_curr = copy.deepcopy(p_new), copy.deepcopy(unit_new), cost_new
+
                 df = pd.DataFrame(
                     {
                         "Temperatura":[T],
@@ -284,11 +339,10 @@ def simulated_annealing(T0=100.0, alpha=0.95, n_iter=100, Tf = 1):
 # --------------------------
 
 
-p_sol, def_sol, armaz_sol, cost_sol, df_fim = simulated_annealing()
+p_sol, unit_sol, cost_sol, df_fim = simulated_annealing()
 print("Objective (total cost) via SA:", cost_sol)
 print("p_sol: ", p_sol)
-print("def_sol: ", def_sol)
-print("armaz_sol: ", armaz_sol)
+print("unit_sol: ", unit_sol)
 print(df_fim)
 
 
