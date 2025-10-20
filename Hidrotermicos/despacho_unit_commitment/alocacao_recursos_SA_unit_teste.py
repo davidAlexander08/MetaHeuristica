@@ -36,6 +36,27 @@ TON = {"T1": 2, "T2": 5, "T3":2}
 Toff = {"T1": 1, "T2": 1, "T3":1}
 UnitCommitment = {"T1": np.zeros(8), "T2": np.zeros(8), "T3": np.zeros(8)}
 
+
+
+############Ex 3
+
+Terms = ["T1", "T2", "T3", "T4", "T5", "T6"]
+N = Terms 
+P = [1,2,3,4,5,6,7,8]
+Custo = {"T1": 10, "T2":20, "T3":21, "T4":22, "T5":23, "T6":24}
+LimSup = {"T1": 100, "T2":100, "T3":100, "T4":100, "T5":100, "T6":100}
+LimInf = {"T1": 10, "T2":10, "T3": 10, "T4": 10, "T5": 10, "T6": 10}
+Demanda = np.array([90, 90, 110, 90, 90, 90, 90, 90])
+geracoes = {unit:[0.0]*len(P) for unit in N}
+TON = {"T1": 2, "T2": 5, "T3":4, "T4":3, "T5":2, "T6":1}
+Toff = {"T1": 1, "T2": 1, "T3":1, "T4":1, "T5":1, "T6":1}
+UnitCommitment = {"T1": np.zeros(8), 
+                    "T2": np.zeros(8), 
+                    "T3": np.zeros(8),
+                    "T4": np.zeros(8), 
+                    "T5": np.zeros(8), 
+                    "T6": np.zeros(8)}
+
 # --------------------------
 # Função objetivo
 # --------------------------
@@ -270,7 +291,7 @@ def neighbor(unit_n):
 # Simulated Annealing
 # --------------------------
 
-def simulated_annealing(T0=100.0, alpha=0.95, n_iter=2, Tf = 90):
+def simulated_annealing(T0=100.0, alpha=0.9, n_iter=5, Tf = 80):
     p_best, unit_best = solucao_gulosa()
     custo_guloso = total_cost(p_best)
     cost_best = total_cost(p_best)
@@ -371,8 +392,8 @@ for temperatura in temperaturas:
         height=500
     )
 
-    #fig.write_html(f"sa_best_cost_{temperatura}.html", include_plotlyjs='cdn')
-    #print("Plot saved as sa_best_cost.html")
+    fig.write_html(f"sa_best_cost_{temperatura}.html", include_plotlyjs='cdn')
+    print("Plot saved as sa_best_cost.html")
 
 # --------------------------
 # Exportar resultados
@@ -404,3 +425,82 @@ print("Summary written to summary_uc_SA.csv")
 #plt.tight_layout()
 #plt.savefig("dispatch_plot_SA.png")
 #plt.show()
+
+
+
+def ILS(n_iter=100):
+    p_best, unit_best = solucao_gulosa()
+    custo_guloso = total_cost(p_best)
+    cost_best = total_cost(p_best)
+    p_curr = copy.deepcopy(p_best)
+    unit_curr = copy.deepcopy(unit_best)
+    cost_curr = cost_best
+    print("#################")
+    print("SOL GULOSA")
+    print("p_best: ", p_best)
+    print("custo_guloso: ", custo_guloso)
+    print("#################")
+    lista_df = []
+    df = pd.DataFrame(
+        {
+            "Iteracao":[0],
+            "Custo_Total":[custo_guloso]
+        }
+    )
+    lista_df.append(df)
+
+    for iter in range(n_iter):
+        p_new, unit_new = neighbor(copy.deepcopy(unit_curr))
+        cost_new = total_cost(p_new)
+        delta_fob = cost_new - cost_curr   
+        if delta_fob < 0:
+            p_curr, unit_curr, cost_curr = copy.deepcopy(p_new), copy.deepcopy(unit_new), cost_new
+            df = pd.DataFrame(
+                {
+                    "Iteracao":[iter],
+                    "Custo_Total":[cost_new]
+                }
+            )
+            lista_df.append(df)
+            if cost_curr < cost_best:
+                print("##############################")
+                print("iter: ", iter)
+                print("p_new: ", p_new)
+                print("cost_new: ", cost_new)
+                print("Demanda: ", Demanda)
+                p_best, unit_best, cost_best = copy.deepcopy(p_curr), copy.deepcopy(unit_curr), cost_curr
+    df_fim = pd.concat(lista_df).reset_index(drop = True)
+    return p_best, unit_best, cost_best, df_fim 
+
+#EXECUTA ILS
+
+p_sol, unit_sol, cost_sol, df_fim = ILS()
+print("Objective (total cost) via SA:", cost_sol)
+print("p_sol: ", p_sol)
+print("unit_sol: ", unit_sol)
+print(df_fim)
+
+
+# Create Plotly line plot
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=df_fim["Iteracao"],
+    y=df_fim["Custo_Total"],
+    mode='lines+markers',
+    line=dict(width=3, color='royalblue'),
+    marker=dict(size=8),
+    name="Best Cost"
+))
+
+fig.update_layout(
+    title=f"ILS",
+    xaxis_title="Iteration",
+    yaxis_title="Objective Function Value",
+    template="plotly_white",
+    font=dict(size=14),
+    width=800,
+    height=500
+)
+
+fig.write_html(f"sa_best_cost_ILS.html", include_plotlyjs='cdn')
+print("Plot saved as sa_best_cost.html")

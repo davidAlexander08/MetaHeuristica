@@ -13,14 +13,26 @@ P = 1:8
 
 # Dados
 Demanda = [90, 90, 110, 90, 90, 90, 90, 90]
-Custo = Dict("H1" => 0.0, "T1" => 10.0, "T2" => 20, "T3"=>30)
+Custo = Dict("H1" => 0.0, "T1" => 10.0, "T2" => 20, "T3"=>21)
 LimiteSup = Dict("H1" => 200.0, "T1" => 100.0, "T2" => 100 , "T3" => 100)
-LimiteInf = Dict("H1" => 0.0,   "T1" => 20.0, "T2" => 30 , "T3" => 10)
+LimiteInf = Dict("H1" => 0.0,   "T1" => 10.0, "T2" => 10 , "T3" => 10)
 penalty_deficit = 1000.0
-TON = Dict("T1" => 2, "T2" => 5, "T3" =>2)
+TON = Dict("T1" => 2, "T2" => 5, "T3" =>4)
 Toff = Dict("T1" => 1, "T2"=>1, "T3"=>1)
 Afluencia = Dict("H1" => [100.0, 50.0, 0.0])
 Armazenamento_inicial = Dict("H1" => 0.0)
+
+## Conjuntos
+#Hydros = []
+#Terms = ["T1", "T2", "T3", "T4", "T5", "T6"]
+#N = Hydros ∪ Terms
+#P = 1:8
+#Demanda = [90, 90, 110, 90, 90, 90, 90, 90]
+#Custo = Dict("T1" => 10.0, "T2" => 20, "T3"=>21, "T4"=>22, "T5" => 23, "T6" => 24)
+#LimiteSup = Dict("T1" => 100.0, "T2" => 100 , "T3" => 100, "T4"=>100, "T5"=>100, "T6"=>100)
+#LimiteInf = Dict("H1" => 0.0,   "T1" => 20.0, "T2" => 30 , "T3" => 10, "T4"=> 10, "T5"=> 10, "T6"=> 10)
+#TON = Dict("T1" => 2, "T2" => 5, "T3" =>4, "T4" => 3, "T5" => 2, "T6" => 1)
+#Toff = Dict("T1" => 1, "T2"=>1, "T3"=>1, "T4"=>1, "T5"=>1, "T6"=>1)
 
 # Modelo
 model = Model(GLPK.Optimizer)
