@@ -41,6 +41,7 @@ class Sistema:
         for gerador in self.geradores:
             if gerador.geracoes is not None:
                 gerador.geracoes[:] = [0] * len(gerador.geracoes)  # set all periods to 0
+                gerador.locked[:] = [False] * len(gerador.locked)  # set all periods to 0
             else:
                 print("ERRO: Lista geradores é None, verifique dados de entrada")
 

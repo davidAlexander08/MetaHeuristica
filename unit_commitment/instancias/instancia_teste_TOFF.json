@@ -1,0 +1,8 @@
+{"instance":8,
+"deficit":1000.0,
+"buses":[
+    {"thermal_units":[
+        {"ramp_up_limit":31.33, "min_downtime":3, "min_uptime":1,"initial_power":59.47,"nome":"g1","initial_status":24,"max_power":100.0,"ramp_down_limit":36.39,"min_power":10.0,"CVU":10.0},
+        {"ramp_up_limit":20.63, "min_downtime":3, "min_uptime":1,"initial_power":105.0,"nome":"g2","initial_status":24,"max_power":100.0,"ramp_down_limit":21.83,"min_power":10.0,"CVU":20.0},
+        {"ramp_up_limit":101.14,"min_downtime":3,"min_uptime":1,"initial_power":323.0,"nome":"g6","initial_status":24,"max_power":100.0,"ramp_down_limit":99.6, "min_power":10.0,"CVU":24.0}],
+        "load":[90,90,110,90,90,90,90,90],"bus":"b1"}]}

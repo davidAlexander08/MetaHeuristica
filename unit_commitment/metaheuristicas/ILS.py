@@ -4,7 +4,7 @@ from metaheuristicas.algoritmo_guloso import *
 from metaheuristicas.neighbour import *
 import pandas as pd
 
-def ILS(sistema_inicial, n_iter=100):
+def ILS(sistema_inicial, n_iter=1000):
     sol_best = solucao_gulosa(sistema_inicial)
     custo_guloso = sol_best.total_cost
     cost_best = sol_best.total_cost
@@ -24,6 +24,7 @@ def ILS(sistema_inicial, n_iter=100):
     lista_df.append(df)
 
     for iter in range(n_iter):
+        print("iter: ",  iter)
         sol_new = neighbor(copy.deepcopy(sol_curr))
         cost_new = sol_new.total_cost
         delta_fob = cost_new - cost_curr   

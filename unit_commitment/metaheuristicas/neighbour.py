@@ -13,7 +13,7 @@ import random
 
 def neighbor(sistema_neighbour):
     # Cria cópias da solução atual
-    gera_log_informacoes(sistema_neighbour)
+    #gera_log_informacoes(sistema_neighbour)
     inviavel = True
     contador = 0
     while inviavel == True:

@@ -3,6 +3,7 @@ from modelo.classes import *
 from utils.utils import *
 import copy
 import pandas as pd
+import random
 
 def verifica_resolve_inviabilidade(sistema_guloso, caminho_usinas):
     #### ADEQUA GERACOES
@@ -22,28 +23,53 @@ def verifica_resolve_inviabilidade(sistema_guloso, caminho_usinas):
 def solucao_gulosa(sistema_inicial):
     sistema_guloso = copy.deepcopy(sistema_inicial)
     ordem_termos = sorted(sistema_guloso.geradores, key=lambda u: u.custo)
+    random.shuffle(ordem_termos) ###### SOLUCAO INICIAL RANDOMICA
     #ordem_menor_termica_maior_termica = [u.nome for u in ordem_termos]
     for t in range(sistema_guloso.n_estagios):
         lista_caminho_usinas =[]
         for unit in ordem_termos:
             lista_caminho_usinas.append(unit)
-            if (sistema_guloso.demanda_liquida[t] > 0):
-                unit.commitment[t] = 1
-                if(t != 0):
-                    if(unit.commitment[t] == 1) and (unit.commitment[t-1] == 0):
-                        for i in range(t, min(t + unit.t_on, max(sistema_guloso.estagios))):
+            if(unit.locked[t] == False):
+                if (sistema_guloso.demanda_liquida[t] > 0):
+                    unit.commitment[t] = 1
+
+                    ################# TON
+                    if(t != 0):
+                        if(unit.commitment[t] == 1) and (unit.commitment[t-1] == 0):
+                            for i in range(t, min(t + unit.t_on, max(sistema_guloso.estagios))):
+                                unit.commitment[i] = 1
+                                unit.geracoes[i] += unit.limite_inferior
+                                unit.locked[i] = True
+                    elif(t== 0):
+                        for i in range(t, t + unit.t_on):
                             unit.commitment[i] = 1
                             unit.geracoes[i] += unit.limite_inferior
-                elif(t== 0):
-                    for i in range(t, t + unit.t_on):
-                        unit.commitment[i] = 1
-                        unit.geracoes[i] += unit.limite_inferior
-                limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
-                geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
-                unit.geracoes[t] += geracao 
-                sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
-            else:
-                unit.geracoes[t] = max(unit.geracoes[t],0)
+                            unit.locked[i] = True
+                    
+                    limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
+                    geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
+                    unit.geracoes[t] += geracao 
+                    sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
+                else:
+                    unit.commitment[t] = 0
+                    ############## TOFF
+                    if(t != 0):
+                        if(unit.commitment[t-1] == 1) and (unit.commitment[t] == 0):
+                            for i in range(t, min(t + unit.t_off, max(sistema_guloso.estagios))):
+                                unit.commitment[i] = 0
+                                unit.geracoes[i] = 0
+                                unit.locked[i] = True
+
+                    unit.geracoes[t] = max(unit.geracoes[t],0)
+
+            elif(unit.locked[t] == True):
+                if(unit.commitment[t] == 1):
+                    geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
+                    sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
+                else:
+                    geracao = 0
+                unit.geracoes[t] = geracao 
+
     df = pd.concat(
         [pd.DataFrame(unit.geracoes), pd.DataFrame(unit.commitment)],
         axis=1  # concatena colunas
@@ -59,7 +85,7 @@ def solucao_gulosa(sistema_inicial):
 
 def adequa_balanco_potencia_guloso(sistema_new):
     sistema_new.zera_geracoes()
-    gera_log_informacoes(sistema_new)
+    #gera_log_informacoes(sistema_new)
     ordem_termos = sorted(sistema_new.geradores, key=lambda u: u.custo)
     #ordem_menor_termica_maior_termica = [u.nome for u in ordem_termos]
     for t in range(sistema_new.n_estagios):
@@ -79,5 +105,5 @@ def adequa_balanco_potencia_guloso(sistema_new):
     df['DemandaLiquida'] = sistema_new.demanda_liquida
     df['Demanda'] = sistema_new.demanda
     #print("############################")
-    gera_log_informacoes(sistema_new)
+    #gera_log_informacoes(sistema_new)
     return sistema_new

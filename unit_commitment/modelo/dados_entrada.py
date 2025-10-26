@@ -16,7 +16,7 @@ def leitura_json(arquivo):
         sistema_inicial.demanda = np.array(Demanda)
         for unit in bus["thermal_units"]:
             unidade_termica = Termica()
-            unidade_termica.commitment = np.zeros(sistema_inicial.n_estagios)
+            unidade_termica.commitment = [None]*(sistema_inicial.n_estagios)
             unidade_termica.geracoes = np.zeros(sistema_inicial.n_estagios)
             unidade_termica.locked = np.zeros(sistema_inicial.n_estagios)
             unidade_termica.nome = unit["nome"]

@@ -21,7 +21,10 @@ def gera_log_informacoes(sistema):
     # Print all Commitment
     print("Commitment:")
     for t in sistema.geradores:
-        commit_str = " ".join(str(int(x)) for x in t.commitment) if t.commitment is not None else "-"
+        if t.commitment is not None and len(t.commitment) > 0:
+            commit_str = " ".join(str(int(x)) if x is not None else "0" for x in t.commitment)
+        else:
+            commit_str = "-"
         print(f"{t.nome:<6}: {commit_str}")
     print("-"*80)
 
