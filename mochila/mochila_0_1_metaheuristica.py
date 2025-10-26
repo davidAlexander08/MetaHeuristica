@@ -16,9 +16,10 @@ capacidade = 7
 n = len(pesos)
 np.random.seed(seed)
 # valores/pesos aleatórios
-#pesos = np.random.randint(2, 15, size=n)
-#valores = np.random.randint(5, 30, size=n)
-#capacidade = int(np.sum(pesos) - max(pesos)*0.01) 
+n = 20
+pesos = np.random.randint(2, 15, size=n)
+valores = np.random.randint(5, 30, size=n)
+capacidade = int(np.sum(pesos) - max(pesos)*0.1) 
 
 print("PESOS: ", pesos)
 print("VALORES: ", valores)
@@ -84,9 +85,7 @@ def solucao_inicial_aleatoria():
         print("capacidade: ", capacidade, " peso_total: ", peso_total)
     return x
 
-x = solucao_inicial_aleatoria()
-print(x)
-melhor_sol = x.copy()
+
 
 def calcula(sol):
     peso_total = np.sum(sol * pesos)
@@ -94,6 +93,9 @@ def calcula(sol):
         return 0  # penalizar excesso de peso
     return np.sum(sol * valores)
 
+x = solucao_inicial_aleatoria()
+print(x)
+melhor_sol = x.copy()
 melhor_valor = calcula(x)
 
 while T > T_min:
@@ -123,8 +125,163 @@ print("Itens selecionados:", melhor_sol)
 
 
 
+#################################################
+print("#############################################################")
+print("SOLUCAO POR ILS")
+x = solucao_inicial_aleatoria()
+print(x)
+melhor_sol = x.copy()
+melhor_valor = calcula(x)
+
+def local_search(x):
+    """Busca local: troca de bits até não haver melhora"""
+    melhorou = True
+    melhor_sol = x.copy()
+    melhor_val = calcula(melhor_sol)
+    while melhorou:
+        melhorou = False
+        for i in range(n):
+            vizinho = melhor_sol.copy()
+            vizinho[i] = 1 - vizinho[i]
+            if np.sum(vizinho * pesos) <= capacidade:
+                val = calcula(vizinho)
+                if val > melhor_val:
+                    melhor_sol = vizinho
+                    melhor_val = val
+                    melhorou = True
+                    break  # recomeça busca
+    return melhor_sol, melhor_val
+
+def perturba(x, intensidade=2):
+    """Perturba a solução trocando 'intensidade' bits"""
+    y = x.copy()
+    indices = np.random.choice(n, intensidade, replace=False)
+    for i in indices:
+        y[i] = 1 - y[i]
+    # Garante viabilidade
+    while np.sum(y * pesos) > capacidade:
+        idx = np.random.choice(np.where(y == 1)[0])
+        y[idx] = 0
+    return y
 
 
+# --------- ILS principal ---------
+
+max_iter = 100
+x = solucao_inicial_aleatoria()
+x, f = local_search(x)
+
+melhor_sol = x.copy()
+melhor_val = f
+
+for it in range(max_iter):
+    y = perturba(melhor_sol)
+    y, f_y = local_search(y)
+    if f_y > melhor_val:
+        melhor_sol = y.copy()
+        melhor_val = f_y
+    # (opcional: critério de aceitação mais elaborado)
+    #print(f"Iter {it}: melhor valor = {melhor_val}")
+
+print("\n--- Resultado Final ---")
+print("Melhor valor:", melhor_val)
+print("Itens selecionados:", melhor_sol)
+print("Peso total:", np.sum(melhor_sol * pesos))
+
+
+##################################################
+print("#############################################################")
+print("SOLUCAO POR VNS")
+
+def shake(x, k):
+    """Gera vizinho aleatório na vizinhança de tamanho k"""
+    y = x.copy()
+    indices = np.random.choice(n, k, replace=False)
+    for i in indices:
+        y[i] = 1 - y[i]
+    # Garante viabilidade
+    while np.sum(y * pesos) > capacidade:
+        idx = np.random.choice(np.where(y == 1)[0])
+        y[idx] = 0
+    return y
+
+# ---------- VNS principal ----------
+
+k_max = 3        # número máximo de vizinhanças
+max_iter = 100   # número máximo de iterações
+
+x = solucao_inicial_aleatoria()
+x, f = local_search(x)
+melhor_sol = x.copy()
+melhor_val = f
+
+for it in range(max_iter):
+    k = 1
+    while k <= k_max:
+        y = shake(melhor_sol, k)
+        y, f_y = local_search(y)
+
+        if f_y > melhor_val:
+            melhor_sol = y.copy()
+            melhor_val = f_y
+            k = 1  # volta à primeira vizinhança
+        else:
+            k += 1  # tenta próxima vizinhança
+    #print(f"Iter {it}: melhor valor = {melhor_val}")
+
+print("\n--- Resultado Final ---")
+print("Melhor valor:", melhor_val)
+print("Itens selecionados:", melhor_sol)
+print("Peso total:", np.sum(melhor_sol * pesos))
+
+
+
+##################################################
+print("#############################################################")
+print("VND")
+
+
+# ---------- VND ----------
+
+def vnd(x, k_max=3):
+    melhor_sol = x.copy()
+    melhor_val = calcula(melhor_sol)
+    k = 1
+    while k <= k_max:
+        vizinho, val_viz = melhor_vizinho_k(melhor_sol, k)
+        if val_viz > melhor_val:
+            melhor_sol = vizinho
+            melhor_val = val_viz
+            k = 1  # volta à primeira vizinhança
+        else:
+            k += 1
+    return melhor_sol, melhor_val
+
+def melhor_vizinho_k(x, k):
+    """Gera todos os vizinhos de tamanho k e retorna o melhor factível"""
+    melhor_sol = x.copy()
+    melhor_val = calcula(x)
+    from itertools import combinations
+    for indices in combinations(range(n), k):
+        vizinho = x.copy()
+        for i in indices:
+            vizinho[i] = 1 - vizinho[i]  # flip k bits
+        if np.sum(vizinho * pesos) <= capacidade:
+            val = calcula(vizinho)
+            if val > melhor_val:
+                melhor_sol = vizinho
+                melhor_val = val
+    return melhor_sol, melhor_val
+
+# ---------- Execução ----------
+
+x0 = solucao_inicial_aleatoria()
+melhor_sol, melhor_val = vnd(x0, k_max=3)
+
+print("\n--- Resultado VND ---")
+print("Melhor valor:", melhor_val)
+print("Itens selecionados:", melhor_sol)
+print("Peso total:", np.sum(melhor_sol * pesos))
 ##################################################
 print("#############################################################")
 print("SOLUCAO GULOSA")

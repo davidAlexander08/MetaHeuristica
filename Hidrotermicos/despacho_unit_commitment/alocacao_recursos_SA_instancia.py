@@ -8,7 +8,9 @@ import plotly.graph_objects as go
 import json
 
 arquivo = "C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/output_instance.json"
-#arquivo = "C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON.json"
+arquivo = "C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON.json"
+arquivo = "C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON_sanidade.json"
+arquivo = "C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json"
 # Read JSON file
 with open(arquivo, "r") as f:
     json_data = json.load(f)
