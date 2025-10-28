@@ -11,10 +11,10 @@ from metaheuristicas.simulated_annealing import *
 from metaheuristicas.ILS import *
 
 
-#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/output_instance.json"
-arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/instancia_teste_TON.json"
-#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/instancia_teste_TON_sanidade.json"
-#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/instancia_teste_TOFF_sanidade.json"
+#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json"
+arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON.json"
+#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON_sanidade.json"
+#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TOFF_sanidade.json"
 # Read JSON file
 sistema_inicial = leitura_json(arquivo)
 gera_log_informacoes(sistema_inicial)
