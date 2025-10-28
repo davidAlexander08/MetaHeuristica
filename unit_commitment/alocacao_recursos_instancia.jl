@@ -8,8 +8,9 @@ using StatsPlots
 using JSON
 
 # Read the JSON file
-json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/output_instance.json") do io
+#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/output_instance.json") do io
 #json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json") do io
+json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON_sanidade.json") do io
     JSON.parse(IOBuffer(read(io, String)))
 end
 

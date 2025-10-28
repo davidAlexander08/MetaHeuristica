@@ -4,7 +4,7 @@ from metaheuristicas.algoritmo_guloso import *
 from metaheuristicas.neighbour import *
 import pandas as pd
 
-def ILS(sistema_inicial, n_iter=1000):
+def ILS(sistema_inicial, n_iter=100):
     sol_best = solucao_gulosa(sistema_inicial)
     custo_guloso = sol_best.total_cost
     cost_best = sol_best.total_cost
