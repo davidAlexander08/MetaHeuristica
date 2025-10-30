@@ -5,12 +5,12 @@ from metaheuristicas.neighbour import *
 import pandas as pd
 
 
-def simulated_annealing(sistema_inicial, T0=100.0, alpha=0.9, n_iter=10, Tf = 70):
-    sol_best = solucao_gulosa(sistema_inicial)
-    custo_guloso = sol_best.total_cost
-    cost_best = sol_best.total_cost
-    sol_curr = copy.deepcopy(sol_best)
-    cost_curr = cost_best
+def simulated_annealing(sistema_inicial, T0=100.0, alpha=0.9, n_iter=100, Tf = 50):
+    sol_best_sa = solucao_gulosa(sistema_inicial)
+    custo_guloso = sol_best_sa.total_cost
+    cost_best_sa = sol_best_sa.total_cost
+    sol_curr = copy.deepcopy(sol_best_sa)
+    cost_curr = cost_best_sa
     print("#################")
     print("SOL GULOSA")
     print("custo_guloso: ", custo_guloso)
@@ -42,13 +42,13 @@ def simulated_annealing(sistema_inicial, T0=100.0, alpha=0.9, n_iter=10, Tf = 70
                     }
                 )
                 lista_df.append(df)
-                if cost_curr < cost_best:
+                if cost_curr < cost_best_sa:
                     print("T: ", T, " iter: ", iter, " custo: ", sol_new.total_cost)
                     print("##############################")
                     print("iter: ", iter)
                     print("cost_new: ", cost_new)
                     print("Demanda: ", sol_new.demanda)
-                    sol_best, cost_best = copy.deepcopy(sol_curr), cost_curr
+                    sol_best_sa, cost_best_sa = copy.deepcopy(sol_curr), cost_curr
             else:
                 if(random.random() < np.exp(-delta_fob/T)):
                     df = pd.DataFrame(
@@ -61,5 +61,5 @@ def simulated_annealing(sistema_inicial, T0=100.0, alpha=0.9, n_iter=10, Tf = 70
                     lista_df.append(df)
                     sol_curr, cost_curr = copy.deepcopy(sol_new), cost_new
         T *= alpha
-    df_fim = pd.concat(lista_df).reset_index(drop = True)
-    return sol_best, cost_best, df_fim 
+    df_fim_sa = pd.concat(lista_df).reset_index(drop = True)
+    return sol_best_sa, cost_best_sa, df_fim_sa 

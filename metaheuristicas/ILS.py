@@ -5,11 +5,11 @@ from metaheuristicas.neighbour import *
 import pandas as pd
 
 def ILS(sistema_inicial, n_iter=100):
-    sol_best = solucao_gulosa(sistema_inicial)
-    custo_guloso = sol_best.total_cost
-    cost_best = sol_best.total_cost
-    sol_curr = copy.deepcopy(sol_best)
-    cost_curr = cost_best
+    sol_best_ils = solucao_gulosa(sistema_inicial)
+    custo_guloso = sol_best_ils.total_cost
+    cost_best_ils = sol_best_ils.total_cost
+    sol_curr = copy.deepcopy(sol_best_ils)
+    cost_curr = cost_best_ils
     print("#################")
     print("SOL GULOSA")
     print("custo_guloso: ", custo_guloso)
@@ -37,11 +37,11 @@ def ILS(sistema_inicial, n_iter=100):
                 }
             )
             lista_df.append(df)
-            if cost_curr < cost_best:
+            if cost_curr < cost_best_ils:
                 print("##############################")
                 print("iter: ", iter)
                 print("cost_new: ", cost_new)
                 print("Demanda: ", sol_new.demanda)
-                sol_best, cost_best = copy.deepcopy(sol_curr), cost_curr
-    df_fim = pd.concat(lista_df).reset_index(drop = True)
-    return sol_best, cost_best, df_fim 
+                sol_best_ils, cost_best_ils = copy.deepcopy(sol_curr), cost_curr
+    df_fim_ils = pd.concat(lista_df).reset_index(drop = True)
+    return sol_best_ils, cost_best_ils, df_fim_ils 

@@ -9,27 +9,77 @@ from modelo.dados_entrada import *
 from utils.utils import *
 from metaheuristicas.simulated_annealing import *
 from metaheuristicas.ILS import *
+from metaheuristicas.Tabu_Search import *
+from metaheuristicas.graphs import *
 
+import os
+os.makedirs('resultados', exist_ok=True)
 
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json"
-arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON.json"
+arquivo = "instancias/instancia_teste_TON_sanidade.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON_sanidade.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TOFF_sanidade.json"
 # Read JSON file
 sistema_inicial = leitura_json(arquivo)
 gera_log_informacoes(sistema_inicial)
 
-#EXECUTA ILS
-solucao, cost_sol, df_fim = ILS(sistema_inicial)
-print("EXECUTANDO ILS")
-print("Objective (total cost) via ILS:", cost_sol)
-print(df_fim)
-exit(1)
+resultados = {}
 
-solucao, cost_sol, df_fim = simulated_annealing(sistema_inicial)
-print("SOLUCAO SIMULATED ANEELING")
-print("Objective (total cost) via SA:", cost_sol)
-print(df_fim)
+#EXECUTA ILS
+sol_best_ils, cost_best_ils, df_fim_ils = ILS(sistema_inicial)
+print("EXECUTANDO ILS")
+print("Objective (total cost) via ILS:", cost_best_ils)
+resultados['ILS'] = {'solucao': sol_best_ils, 'custo': cost_best_ils, 'df': df_fim_ils}
+print(df_fim_ils)
+
+# EXECUTA SA
+sol_best_sa, cost_best_sa, df_fim_sa = simulated_annealing(sistema_inicial)
+print("EXECUTANDO SIMULATED ANNEALING")
+print("Objective (total cost) via SA:", cost_best_sa)
+resultados['Simulated Annealing'] = {'solucao': sol_best_sa, 'custo': cost_best_sa, 'df': df_fim_sa}
+print(df_fim_sa)
+
+# EXECUTA TS
+sol_best_ts, cost_best_ts, df_fim_ts = busca_tabu(sistema_inicial)
+print("EXECUTANDO BUSCA TABU")
+print("Objective (total cost) via TS:", cost_best_ts)
+resultados['Busca Tabu'] = {'solucao': sol_best_ts, 'custo': cost_best_ts, 'df': df_fim_ts}
+print(df_fim_ts)
+
+# Comparação final
+print("\n=== COMPARAÇÃO FINAL ===")
+print(f"Busca Tabu: {cost_best_ts}")
+print(f"ILS: {cost_best_ils}")
+print(f"Simulated Annealing: {cost_best_sa}")
+
+
+
+# COMPARAÇÃO FINAL
+print("\n" + "="*60)
+print("RESULTADOS COMPARATIVOS")
+print("="*60)
+
+for metodo, resultado in resultados.items():
+    custo_inicial = resultado['df']['Custo_Total'].iloc[0]
+    custo_final = resultado['custo']
+    melhoria = ((custo_inicial - custo_final) / custo_inicial) * 100
+    print(f"{metodo:<20} | Custo Inicial: {custo_inicial:8.2f} | Custo Final: {custo_final:8.2f} | Melhoria: {melhoria:6.2f}%")
+
+# GERAR GRÁFICOS COMPARATIVOS
+print("\nGerando gráficos comparativos...")
+gerar_grafico_comparativo(resultados)
+
+print("\nExecução concluída! Gráficos salvos na pasta 'resultados/'")
+
+# Após gerar_grafico_comparativo(resultados)
+caminho_verificacao = os.path.join('resultados', 'comparativo_metaheuristicas.png')
+if os.path.exists(caminho_verificacao):
+    print(f"✓ Arquivo gerado com sucesso: {caminho_verificacao}")
+    print(f"Tamanho do arquivo: {os.path.getsize(caminho_verificacao)} bytes")
+else:
+    print(f"✗ Arquivo NÃO foi gerado: {caminho_verificacao}")
+    
+exit(1)
 
 
 
