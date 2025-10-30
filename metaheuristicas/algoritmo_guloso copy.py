@@ -20,28 +20,27 @@ def verifica_resolve_inviabilidade(sistema_guloso, caminho_usinas):
                         diff = diff - subtracao_diff
     return sistema_guloso
 
-def find_locked(t, unit, T_discr):
+def find_locked(t, unit):
     positions = []
-    for idx in range(t, min(t + T_discr, len(unit.commitment))):
+    for idx in range(t, min(t + unit.t_on, len(unit.commitment))):
         if unit.locked[idx] == 1:
             positions.append(idx)
     return positions
 
-def verifica_futuro(t, unit, TEMPO):
-    locked_ahead = find_locked(t, unit, TEMPO)
+def verifica_TON_futuro(t, unit):
+    locked_ahead = find_locked(t, unit)
     #print("locked_ahead: ", locked_ahead)
-    encontrou_ton = False
-    encontrou_toff = False
     if(len(locked_ahead) != 0):
         values = []
         for idx in locked_ahead:
             values.append(unit.commitment[idx])
         #print("t: ",t, " ", values, " ", unit.commitment, " ", unit.nome, " ", sum(values))
-        if(sum(values) > 1):
-            encontrou_ton = True
         if(sum(values) ==0):
-            encontrou_toff =  True 
-    return encontrou_ton, encontrou_toff
+            return True 
+        else: 
+            return False
+    else:
+        return False
 
 def nova_solucao_gulosa(sistema_inicial):
     sistema_guloso = copy.deepcopy(sistema_inicial)
@@ -54,58 +53,79 @@ def nova_solucao_gulosa(sistema_inicial):
                 if (sistema_guloso.demanda_liquida[t] > 0):
                     unit.commitment[t] = 1
                     ################# TON
-                    unit_anterior = 0 if t == 0 else unit.commitment[t-1]
-                    if(unit.commitment[t] == 1) and (unit_anterior == 0):
-                        encontrou_ton, encontrou_toff = verifica_futuro(t, unit, unit.t_on)
-                        if(encontrou_toff == False):
-                            for i in range(t, min(t + unit.t_on, max(sistema_guloso.estagios))):
+                    flag_unit_locked_off_future = False
+                    if(t != 0):
+                        unit_anterior = 0 if t == 0 else unit.commitment[t-1]
+                        if(unit.commitment[t] == 1) and (unit.commitment[t-1] == 0):
+                            flag_unit_locked_off_future = verifica_TON_futuro(t, unit)
+                            #print("t: ", t, " unit: ", unit.nome, " TON: ", unit.t_on, " flag_unit_locked_off_future: ", flag_unit_locked_off_future)
+                            if(flag_unit_locked_off_future == False):
+                                for i in range(t, min(t + unit.t_on, max(sistema_guloso.estagios))):
+                                    unit.commitment[i] = 1
+                                    unit.geracoes[i] += unit.limite_inferior
+                                    unit.locked[i] = True
+                                limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
+                                geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
+                                unit.geracoes[t] += geracao 
+                            else:
+                                unit.commitment[t] = 0
+                                unit.geracoes[t] = 0
+                        else:
+                            geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
+                            unit.geracoes[t] = geracao
+                            sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
+                    elif(t== 0):
+                        flag_unit_locked_off_future = verifica_TON_futuro(t, unit)
+                        if(flag_unit_locked_off_future == False):
+                            for i in range(t, t + unit.t_on):
                                 unit.commitment[i] = 1
                                 unit.geracoes[i] += unit.limite_inferior
                                 unit.locked[i] = True
                             limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
                             geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
-                            unit.geracoes[t] += geracao
-                        
+                            unit.geracoes[t] += geracao 
                         else:
                             unit.commitment[t] = 0
                             unit.geracoes[t] = 0
-                    else:
-                        #print("nome: ", unit.nome)
-                        geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
-                        unit.geracoes[t] = geracao
+                    
+                    
+                    sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
                 else:
                     unit.commitment[t] = 0
                     ############## TOFF
                     if(t != 0):
+                        
                         if(unit.commitment[t-1] == 1) and (unit.commitment[t] == 0):
-                            encontrou_ton, encontrou_toff = verifica_futuro(t, unit, unit.t_off)
-                            if(encontrou_ton == False):
-                                for i in range(t, min(t + unit.t_off, max(sistema_guloso.estagios))):
-                                    unit.commitment[i] = 0
-                                    unit.geracoes[i] = 0
-                                    unit.locked[i] = True
-                                unit.geracoes[t] = max(unit.geracoes[t],0)
-                            else:
-                                unit.commitment[t] = 1
-                                geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
-                                unit.geracoes[t] = geracao
+                            for i in range(t, min(t + unit.t_off, max(sistema_guloso.estagios))):
+                                unit.commitment[i] = 0
+                                unit.geracoes[i] = 0
+                                unit.locked[i] = True
+
+                    unit.geracoes[t] = max(unit.geracoes[t],0)
             elif(unit.locked[t] == True):
+                
                 if(unit.commitment[t] == 1):
-                    #print(geracao)
-                    #print(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]))
-                    #unit.geracoes[t] += max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
-                    limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
-                    geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
-                    unit.geracoes[t] += geracao
+                    #print("ENTROU AQUI", sistema_guloso.demanda_liquida[t])
+
+                    geracao += max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
+
                 else:
-                    unit.geracoes[t] = 0
-            sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
+                    
+                    geracao = 0
+                unit.geracoes[t] = geracao 
+                sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
             #print("t: ", t, " nome: ", unit.nome, " geracoes: ", unit.geracoes, " commit: ", unit.commitment, " locked: ", unit.locked)
-            #if(t == 2 and unit.nome == "g0"):
+            #if(t == 1 and unit.nome == "g1"):
             #    exit(1)
+    #df = pd.concat(
+    #    [pd.DataFrame(unit.geracoes), pd.DataFrame(unit.commitment)],
+    #    axis=1  # concatena colunas
+    #)
+    #df['DemandaLiquida'] = sistema_guloso.demanda_liquida
+    #df['Demanda'] = sistema_guloso.demanda
+    #print(df.round(1))
     print("############################")
     print("CUSTO TOTAL: ", sistema_guloso.total_cost)
-
 
     return sistema_guloso
 

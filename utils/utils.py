@@ -1,4 +1,30 @@
 
+
+def gera_log_unitcommitment(sistema):
+
+    if sistema.demanda is not None and len(sistema.demanda) > 0:
+        demanda_str = " ".join(f"{int(x):>3}" for x in sistema.demanda)
+        print(f"Demanda   : {demanda_str}")
+        print("-"*80)
+
+    # Print all Gerações
+    print("Gerações:")
+    for t in sistema.geradores:
+        geracoes_str = " ".join(f"{int(x):>3}" for x in t.geracoes) if t.geracoes is not None else "-"
+        print(f"{t.nome:<6}: {geracoes_str}")
+    print("-"*80)
+
+    # Print all Commitment
+    for t in sistema.geradores:
+        if t.commitment is not None and len(t.commitment) > 0:
+            commit_str = " ".join(str(int(x)) if x is not None else "0" for x in t.commitment)
+        else:
+            commit_str = "-"
+        print(f"{t.nome:<6}: {commit_str}")
+    print("CUSTO: ", sistema.total_cost)
+    print("-"*80)
+
+
 def gera_log_informacoes(sistema):
     ## Print unit info
     for t in sistema.geradores:
@@ -28,12 +54,12 @@ def gera_log_informacoes(sistema):
         print(f"{t.nome:<6}: {commit_str}")
     print("-"*80)
 
-    ## Print all Locked
-    #print("Locked:")
-    #for t in sistema.geradores:
-    #    locked_str = " ".join(str(int(x)) for x in t.locked) if t.locked is not None else "-"
-    #    print(f"{t.nome:<6}: {locked_str}")
-    #print("-"*80)
+    # Print all Locked
+    print("Locked:")
+    for t in sistema.geradores:
+        locked_str = " ".join(str(int(x)) for x in t.locked) if t.locked is not None else "-"
+        print(f"{t.nome:<6}: {locked_str}")
+    print("-"*80)
 # Initialize containers
 #UnitCommitment = {}
 

@@ -8,9 +8,10 @@ using StatsPlots
 using JSON
 
 # Read the JSON file
-#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/unit_commitment/instancias/output_instance.json") do io
+#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json") do io
+json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json") do io
 #json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json") do io
-json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON_sanidade.json") do io
+#json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON_sanidade.json") do io
     JSON.parse(IOBuffer(read(io, String)))
 end
 
@@ -186,6 +187,38 @@ for u_unit in N
 end
 
 
+println("\nTabela de Geração (p):")
+header = ["Periodo"; string.(N); "Soma_Geracao"; "Demanda"]
+println(join(header, "\t"))
+
+for t in P
+    # collect unit generation values for this period
+    geracoes = [value(p[u, t]) for u in N]
+    soma_geracao = sum(geracoes)
+    demanda = Demanda[t]  # or your demand vector name
+
+    # build row
+    row = [string(t)]
+    append!(row, [@sprintf("%7.2f", g) for g in geracoes])
+    push!(row, @sprintf("%7.2f", soma_geracao))
+    push!(row, @sprintf("%7.2f", demanda))
+
+    println(join(row, "\t"))
+end
+
+println("\nTabela de Unit (u):")
+header = ["Periodo" ; string.(N)]  # first column is period, then unit names
+println(join(header, "\t"))
+
+for t in P
+    row = [string(t)]
+    for usi in N
+        push!(row, @sprintf("%7.2f", value(u[usi, t])))
+    end
+    println(join(row, "\t"))
+end
+
+
 # Print deficit, demand, total generation
 println("Period; Deficit; Demand; TotalGen")
 for t in P
@@ -203,6 +236,9 @@ for t in P
         TotalGen = sum(value(p[u,t]) for u in N)
     ))
 end
+
+
+
 
 df_summary = DataFrame(rows)
 CSV.write("summary_dispatch.csv", df_summary)

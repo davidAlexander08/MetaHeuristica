@@ -24,7 +24,7 @@ def ILS(sistema_inicial, n_iter=100):
     lista_df.append(df)
 
     for iter in range(n_iter):
-        print("iter: ",  iter)
+        print("iter: ",  iter, " sol_curr: ", sol_curr.total_cost)
         sol_new = neighbor(copy.deepcopy(sol_curr))
         cost_new = sol_new.total_cost
         delta_fob = cost_new - cost_curr   
@@ -44,4 +44,6 @@ def ILS(sistema_inicial, n_iter=100):
                 print("Demanda: ", sol_new.demanda)
                 sol_best, cost_best = copy.deepcopy(sol_curr), cost_curr
     df_fim = pd.concat(lista_df).reset_index(drop = True)
+
+    gera_log_unitcommitment(sol_best)
     return sol_best, cost_best, df_fim 

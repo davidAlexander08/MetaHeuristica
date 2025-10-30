@@ -30,4 +30,6 @@ def leitura_json(arquivo):
     sistema_inicial.geradores = lista_unidades_termicas
     sistema_inicial.deficit = np.zeros(sistema_inicial.n_estagios)
     sistema_inicial.custo_deficit = json_data["deficit"]
+    print(sistema_inicial.estagios)
     return sistema_inicial
+
