@@ -7,17 +7,22 @@ import plotly.graph_objects as go
 from modelo.classes import *  # your separate file
 from modelo.dados_entrada import *
 from utils.utils import *
-from metaheuristicas.simulated_annealing import *
-from metaheuristicas.ILS import *
+from neometaheuristica.simulated_annealing import *
+from neometaheuristica.ILS import *
+from neometaheuristica.VNS import *
 
 
-arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json"
+#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON.json"
-#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json"
+arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON_sanidade.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TOFF_sanidade.json"
 # Read JSON file
 sistema_inicial = leitura_json(arquivo)
+
+
+
+
 #gera_log_informacoes(sistema_inicial)
 
 #EXECUTA ILS
@@ -25,6 +30,26 @@ solucao, cost_sol, df_fim = ILS(sistema_inicial)
 print("EXECUTANDO ILS")
 print("Objective (total cost) via ILS:", cost_sol)
 print(df_fim)
+data = {termica.nome: termica.geracoes for termica in solucao.geradores}
+df_generation = pd.DataFrame(data)
+df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
+df_generation["DEMANDA"] = solucao.demanda
+print(df_generation)
+
+#rows = []
+#for t_idx, t in enumerate(solucao.estagios):
+#    total_gen = 0
+#    for termica in solucao.geradores:
+#        total_gen += termica.geracoes[t_idx]
+#    rows.append({
+#        "Period": t,
+#        "Demand": solucao.demanda[t_idx],
+#        "TotalGen": total_gen
+#    })
+#
+#df_summary = pd.DataFrame(rows)
+#print(df_summary) 
+
 exit(1)
 
 solucao, cost_sol, df_fim = simulated_annealing(sistema_inicial)

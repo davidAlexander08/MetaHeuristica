@@ -9,8 +9,8 @@ using JSON
 
 # Read the JSON file
 #json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json") do io
-json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json") do io
-#json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json") do io
+#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json") do io
+json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json") do io
 #json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON_sanidade.json") do io
     JSON.parse(IOBuffer(read(io, String)))
 end
@@ -188,13 +188,15 @@ end
 
 
 println("\nTabela de Geração (p):")
-header = ["Periodo"; string.(N); "Soma_Geracao"; "Demanda"]
+header = ["Periodo"; string.(N); "Soma_Geracao"; "Demanda"; "Custo"]
 println(join(header, "\t"))
 
 for t in P
     # collect unit generation values for this period
     geracoes = [value(p[u, t]) for u in N]
+    custos = [value(p[u, t])*Custo[u] for u in N]
     soma_geracao = sum(geracoes)
+    soma_custos = sum(custos)
     demanda = Demanda[t]  # or your demand vector name
 
     # build row
@@ -202,58 +204,60 @@ for t in P
     append!(row, [@sprintf("%7.2f", g) for g in geracoes])
     push!(row, @sprintf("%7.2f", soma_geracao))
     push!(row, @sprintf("%7.2f", demanda))
+    push!(row, @sprintf("%7.2f", soma_custos))
 
     println(join(row, "\t"))
 end
+println("Objective (total cost): ", objective_value(model))
 
-println("\nTabela de Unit (u):")
-header = ["Periodo" ; string.(N)]  # first column is period, then unit names
-println(join(header, "\t"))
-
-for t in P
-    row = [string(t)]
-    for usi in N
-        push!(row, @sprintf("%7.2f", value(u[usi, t])))
-    end
-    println(join(row, "\t"))
-end
-
-
-# Print deficit, demand, total generation
-println("Period; Deficit; Demand; TotalGen")
-for t in P
-    totalgen = sum(value(p[u,t]) for u in N)
-    @printf("%2d ; %8.4f ; %6.1f ; %8.2f\n", t, value(deficit[t]), Demanda[t], totalgen)
-end
-
-# Save summary table
-rows = Any[]
-for t in P
-    push!(rows, (
-        Period = t,
-        Demand = Demanda[t],
-        Deficit = value(deficit[t]),
-        TotalGen = sum(value(p[u,t]) for u in N)
-    ))
-end
+#println("\nTabela de Unit (u):")
+#header = ["Periodo" ; string.(N)]  # first column is period, then unit names
+#println(join(header, "\t"))
+#
+#for t in P
+#    row = [string(t)]
+#    for usi in N
+#        push!(row, @sprintf("%7.2f", value(u[usi, t])))
+#    end
+#    println(join(row, "\t"))
+#end
 
 
+## Print deficit, demand, total generation
+#println("Period; Deficit; Demand; TotalGen")
+#for t in P
+#    totalgen = sum(value(p[u,t]) for u in N)
+#    @printf("%2d ; %8.4f ; %6.1f ; %8.2f\n", t, value(deficit[t]), Demanda[t], totalgen)
+#end
+#
+## Save summary table
+#rows = Any[]
+#for t in P
+#    push!(rows, (
+#        Period = t,
+#        Demand = Demanda[t],
+#        Deficit = value(deficit[t]),
+#        TotalGen = sum(value(p[u,t]) for u in N)
+#    ))
+#end
 
 
-df_summary = DataFrame(rows)
-CSV.write("summary_dispatch.csv", df_summary)
-println("\nSummary written to summary_dispatch.csv and Operacao-Despacho.csv")
 
-# Plot results
-plt = @df df_summary plot(
-    :Period,
-    [:Demand, :Deficit, :TotalGen],
-    xlabel="Period",
-    ylabel="MW",
-    lw=2,
-    label=["Demand" "Deficit" "TotalGen"],
-    title="Dispatch Summary"
-)
 
-savefig(plt, "dispatch_plot.png")
-println("Plot saved as dispatch_plot.png")
+#df_summary = DataFrame(rows)
+#CSV.write("summary_dispatch.csv", df_summary)
+#println("\nSummary written to summary_dispatch.csv and Operacao-Despacho.csv")
+#
+## Plot results
+#plt = @df df_summary plot(
+#    :Period,
+#    [:Demand, :Deficit, :TotalGen],
+#    xlabel="Period",
+#    ylabel="MW",
+#    lw=2,
+#    label=["Demand" "Deficit" "TotalGen"],
+#    title="Dispatch Summary"
+#)
+#
+#savefig(plt, "dispatch_plot.png")
+#println("Plot saved as dispatch_plot.png")

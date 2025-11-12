@@ -124,8 +124,8 @@ def nova_solucao_gulosa(sistema_inicial):
     #df['DemandaLiquida'] = sistema_guloso.demanda_liquida
     #df['Demanda'] = sistema_guloso.demanda
     #print(df.round(1))
-    print("############################")
-    print("CUSTO TOTAL: ", sistema_guloso.total_cost)
+    #print("############################")
+    #print("CUSTO TOTAL: ", sistema_guloso.total_cost)
 
     return sistema_guloso
 

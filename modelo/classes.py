@@ -20,7 +20,16 @@ class Sistema:
         self.deficit = None
         self.custo_deficit = None
         self.custo_total = None
-    
+        self.mapaNomeUsina = None
+
+    def getUsina(self, nome):
+        if(self.mapaNomeUsina == None):
+            mapa = {}
+            for ger in self.geradores:
+                mapa[ger.nome] = ger
+            self.mapaNomeUsina = mapa
+        return self.mapaNomeUsina[nome]
+
     @property
     def n_estagios(self):
         if self.estagios is not None:

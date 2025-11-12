@@ -2,14 +2,11 @@
 "deficit":1000.0,
 "buses":[
     {"thermal_units":[
-        {"ramp_up_limit":42.0,"min_downtime":3,   "min_uptime":7,"initial_power":118.0,"nome":"g0","initial_status":24,"max_power":100.0,"ramp_down_limit":32.6,"min_power":25.0,"CVU":50.0},
-        {"ramp_up_limit":31.33,"min_downtime":3,  "min_uptime":6,"initial_power":59.47,"nome":"g1","initial_status":24,"max_power":100.0,"ramp_down_limit":36.39,"min_power":25.0,"CVU":52.0},
-        {"ramp_up_limit":20.63,"min_downtime":3,  "min_uptime":6,"initial_power":105.0,"nome":"g2","initial_status":24,"max_power":100.0,"ramp_down_limit":21.83,"min_power":50.0,"CVU":53.0},
-        {"ramp_up_limit":27.87,"min_downtime":4,  "min_uptime":6,"initial_power":113.0,"nome":"g3","initial_status":24,"max_power":100.0,"ramp_down_limit":27.09,"min_power":50.0,"CVU":54.0},
-        {"ramp_up_limit":22.2,"min_downtime":3,   "min_uptime":5,"initial_power":102.0,"nome":"g4","initial_status":24,"max_power":100.0,"ramp_down_limit":27.42,"min_power":50.0,"CVU":56.0},
-        {"ramp_up_limit":51.69,"min_downtime":8,  "min_uptime":8,"initial_power":0.0,"nome":"g5","initial_status":-24,"max_power":200.0,"ramp_down_limit":61.7,"min_power":50.0,"CVU":58.0},
-        {"ramp_up_limit":67.06,"min_downtime":8,  "min_uptime":7,"initial_power":0.0,"nome":"g6","initial_status":-24,"max_power":200.0,"ramp_down_limit":49.72,"min_power":50.0,"CVU":60.0},
-        {"ramp_up_limit":64.14,"min_downtime":1,  "min_uptime":1,"initial_power":0.0,"nome":"g7","initial_status":-24,"max_power":200.0,"ramp_down_limit":69.18,"min_power":50.0,"CVU":62.0},
-        {"ramp_up_limit":89.62,"min_downtime":3, "min_uptime":2,"initial_power":85.0,"nome":"g8","initial_status":24,"max_power":250.0,"ramp_down_limit":78.75,"min_power":100.0,"CVU":64.0},
-        {"ramp_up_limit":101.14,"min_downtime":7,"min_uptime":2,"initial_power":323.0,"nome":"g9","initial_status":24,"max_power":300.0,"ramp_down_limit":99.6,"min_power":100.0,"CVU":66.0}],
-        "load":[500.0,550.0,500.0,750.0,700.0,250.0,400.0,600.0,700.0,700.0,500.0,800.0],"bus":"b1"}]}
+        {"ramp_up_limit":42.0,"min_downtime":3,   "min_uptime":7,"initial_power":118.0,"nome":"g0","initial_status":24,"max_power":100.0,"ramp_down_limit":32.6,"min_power":25.0,"CVU":10.0},
+        {"ramp_up_limit":31.33,"min_downtime":3,  "min_uptime":6,"initial_power":59.47,"nome":"g1","initial_status":24,"max_power":100.0,"ramp_down_limit":36.39,"min_power":25.0,"CVU":12.0},
+        {"ramp_up_limit":20.63,"min_downtime":3,  "min_uptime":6,"initial_power":105.0,"nome":"g2","initial_status":24,"max_power":100.0,"ramp_down_limit":21.83,"min_power":50.0,"CVU":13.0},
+        {"ramp_up_limit":27.87,"min_downtime":4,  "min_uptime":6,"initial_power":113.0,"nome":"g3","initial_status":24,"max_power":100.0,"ramp_down_limit":27.09,"min_power":50.0,"CVU":14.0},
+        {"ramp_up_limit":22.2,"min_downtime":3,   "min_uptime":5,"initial_power":102.0,"nome":"g4","initial_status":24,"max_power":100.0,"ramp_down_limit":27.42,"min_power":50.0,"CVU":16.0},
+        {"ramp_up_limit":51.69,"min_downtime":3,  "min_uptime":2,"initial_power":0.0,"nome":"g5","initial_status":-24,"max_power":200.0,"ramp_down_limit":61.7,"min_power":50.0,"CVU":18.0},
+        {"ramp_up_limit":67.06,"min_downtime":2,  "min_uptime":3,"initial_power":0.0,"nome":"g6","initial_status":-24,"max_power":300.0,"ramp_down_limit":49.72,"min_power":50.0,"CVU":20.0}],
+        "load":[300.0,350.0,300.0,550.0,500.0,250.0,200.0,400.0,500.0,500.0,300.0,200.0],"bus":"b1"}]}

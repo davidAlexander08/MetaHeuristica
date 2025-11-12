@@ -103,8 +103,8 @@ def nova_solucao_gulosa(sistema_inicial):
             #print("t: ", t, " nome: ", unit.nome, " geracoes: ", unit.geracoes, " commit: ", unit.commitment, " locked: ", unit.locked)
             #if(t == 2 and unit.nome == "g0"):
             #    exit(1)
-    print("############################")
-    print("CUSTO TOTAL: ", sistema_guloso.total_cost)
+    #print("############################")
+    #print("CUSTO TOTAL: ", sistema_guloso.total_cost)
 
 
     return sistema_guloso
@@ -125,11 +125,18 @@ def solucao_gulosa(sistema_inicial):
                     unit.commitment[t] = 1
                     ################# TON
                     if(t != 0):
+                        temp = sistema_guloso.demanda_liquida
                         if(unit.commitment[t] == 1) and (unit.commitment[t-1] == 0):
                             for i in range(t, min(t + unit.t_on, max(sistema_guloso.estagios))):
                                 unit.commitment[i] = 1
                                 unit.geracoes[i] += unit.limite_inferior
                                 unit.locked[i] = True
+                        else:
+                                                    #print("nome: ", unit.nome)
+                            #geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
+                            #unit.geracoes[t] = geracao
+                            print("t: ", t, " nome: ", unit.nome, " geracao: ", unit.geracoes[t], " Lsup: ", unit.limite_superior, " Linf: ", unit.limite_inferior, " demLiq: ", temp)
+
                     elif(t== 0):
                         for i in range(t, t + unit.t_on):
                             unit.commitment[i] = 1
@@ -153,22 +160,29 @@ def solucao_gulosa(sistema_inicial):
                     unit.geracoes[t] = max(unit.geracoes[t],0)
 
             elif(unit.locked[t] == True):
+                temp = sistema_guloso.demanda_liquida
                 if(unit.commitment[t] == 1):
-                    geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
-                    sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
+                    limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
+                    geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
+                    unit.geracoes[t] += geracao
                 else:
                     geracao = 0
-                unit.geracoes[t] = geracao 
-
-    df = pd.concat(
-        [pd.DataFrame(unit.geracoes), pd.DataFrame(unit.commitment)],
-        axis=1  # concatena colunas
-    )
-    df['DemandaLiquida'] = sistema_guloso.demanda_liquida
-    df['Demanda'] = sistema_guloso.demanda
-    print(df.round(1))
-    print("############################")
-    print("CUSTO TOTAL: ", sistema_guloso.total_cost)
+                    unit.geracoes[t] = geracao 
+                #print("t: ", t, " nome: ", unit.nome, " geracao: ", unit.geracoes[t], " Lsup: ", unit.limite_superior, " Linf: ", unit.limite_inferior, " demLiq: ", temp)
+                sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
+                #print("t: ", t, " nome: ", unit.nome, " geracao: ", unit.geracoes[t])
+            #if(t == 2 and unit.nome =="g4"):
+            #    gera_log_informacoes(sistema_guloso)
+            #    exit(1)
+    #df = pd.concat(
+    #    [pd.DataFrame(unit.geracoes), pd.DataFrame(unit.commitment)],
+    #    axis=1  # concatena colunas
+    #)
+    #df['DemandaLiquida'] = sistema_guloso.demanda_liquida
+    #df['Demanda'] = sistema_guloso.demanda
+    #print(df.round(1))
+    #print("############################")
+    #print("CUSTO TOTAL: ", sistema_guloso.total_cost)
 
     return sistema_guloso
 
@@ -188,12 +202,12 @@ def adequa_balanco_potencia_guloso(sistema_new):
             else:
                 geracao = 0
             unit.geracoes[t] = geracao 
-    df = pd.concat(
-        [pd.DataFrame(unit.geracoes), pd.DataFrame(unit.commitment)],
-        axis=1  # concatena colunas
-    )
-    df['DemandaLiquida'] = sistema_new.demanda_liquida
-    df['Demanda'] = sistema_new.demanda
+    #df = pd.concat(
+    #    [pd.DataFrame(unit.geracoes), pd.DataFrame(unit.commitment)],
+    #    axis=1  # concatena colunas
+    #)
+    #df['DemandaLiquida'] = sistema_new.demanda_liquida
+    #df['Demanda'] = sistema_new.demanda
     #print("############################")
     #gera_log_informacoes(sistema_new)
     return sistema_new
