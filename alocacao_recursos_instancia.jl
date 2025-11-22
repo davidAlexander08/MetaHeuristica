@@ -10,10 +10,56 @@ using JSON
 # Read the JSON file
 #json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json") do io
 #json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json") do io
-json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json") do io
+#json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TOFF_sanidade.json") do io
+#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/10_0_1_w.json") do io
+#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/10_0_3_w.json") do io
+#json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/20_0_1_w.json") do io
+json_data = open("C:/Users/testa/Documents/git/MetaHeuristica/instancias/50_0_1_w.json") do io
 #json_data = open("C:/Users/testa/Documents/Doutorado_materias/Metaheuristica/instancia_teste_TON_sanidade.json") do io
     JSON.parse(IOBuffer(read(io, String)))
 end
+
+
+#Terms = []
+#Custo = Dict()
+#LimiteSup = Dict()
+#LimiteInf = Dict()
+#TON = Dict()
+#Toff = Dict()
+## Loop over buses (or access first bus)
+#Demanda = []
+#for bus in json_data["buses"]
+#    println("Bus name: ", bus["bus"])
+#    println("Load: ", bus["load"])
+#    append!(Demanda, bus["load"])
+#    # Loop over thermal units
+#    for unit in bus["thermal_units"]
+#        push!(Terms, unit["nome"])
+#        Custo[unit["nome"]] = unit["CVU"]
+#        LimiteSup[unit["nome"]] = unit["max_power"]
+#        LimiteInf[unit["nome"]] = unit["min_power"]
+#        TON[unit["nome"]] = unit["min_uptime"]
+#        Toff[unit["nome"]] = unit["min_downtime"]
+#        println("Unit name: ", unit["nome"])
+#        println(" CVU: ", unit["CVU"])
+#        println(" max_power: ", unit["max_power"])
+#        println(" min_power: ", unit["min_power"])
+#        println(" min_uptime: ", unit["min_uptime"])
+#        println(" min_downtime: ", unit["min_downtime"])
+#        println(" ramp_up_limit: ", unit["ramp_up_limit"])
+#        println(" ramp_down_limit: ", unit["ramp_down_limit"])
+#        println(" initial_power: ", unit["initial_power"])
+#        println(" initial_status: ", unit["initial_status"])
+#    end
+#end
+#N = Terms
+#P = 1:json_data["instance"]
+#penalty_deficit = json_data["deficit"]
+#println("P: ", P)
+##Demanda = Float64.(bus["load"])
+#print("Demanda: ", Demanda)
+
+
 
 
 Terms = []
@@ -24,36 +70,50 @@ TON = Dict()
 Toff = Dict()
 # Loop over buses (or access first bus)
 Demanda = []
-for bus in json_data["buses"]
-    println("Bus name: ", bus["bus"])
-    println("Load: ", bus["load"])
-    append!(Demanda, bus["load"])
-    # Loop over thermal units
-    for unit in bus["thermal_units"]
-        push!(Terms, unit["nome"])
-        Custo[unit["nome"]] = unit["CVU"]
-        LimiteSup[unit["nome"]] = unit["max_power"]
-        LimiteInf[unit["nome"]] = unit["min_power"]
-        TON[unit["nome"]] = unit["min_uptime"]
-        Toff[unit["nome"]] = unit["min_downtime"]
-        println("Unit name: ", unit["nome"])
-        println(" CVU: ", unit["CVU"])
-        println(" max_power: ", unit["max_power"])
-        println(" min_power: ", unit["min_power"])
-        println(" min_uptime: ", unit["min_uptime"])
-        println(" min_downtime: ", unit["min_downtime"])
-        println(" ramp_up_limit: ", unit["ramp_up_limit"])
-        println(" ramp_down_limit: ", unit["ramp_down_limit"])
-        println(" initial_power: ", unit["initial_power"])
-        println(" initial_status: ", unit["initial_status"])
-    end
+for (busname, busdata) in json_data["Buses"]
+    println("Bus name: ", busname)
+    println("Load: ", busdata["Load (MW)"])
+    #append!(Demanda, busdata["Load (MW)"])
+    append!(Demanda, round.(Int, busdata["Load (MW)"]))
 end
+for (genname, gen) in json_data["Generators"]
+    push!(Terms, genname)
+    Custo[genname] = gen["Production cost curve (\$)"][1]
+    LimiteSup[genname] = gen["Production cost curve (MW)"][end]
+    LimiteInf[genname] = gen["Production cost curve (MW)"][1]
+    TON[genname] = gen["Minimum uptime (h)"]
+    Toff[genname] = gen["Minimum downtime (h)"]
+    println("generator name: ", genname)
+    println(" CVU: ", gen["Production cost curve (\$)"][1])
+    println(" max_power: ", gen["Production cost curve (MW)"][end])
+    println(" min_power: ", gen["Production cost curve (MW)"][1])
+    println(" min_uptime: ", gen["Minimum uptime (h)"])
+    println(" min_downtime: ", gen["Minimum downtime (h)"])
+end
+
 N = Terms
-P = 1:json_data["instance"]
-penalty_deficit = json_data["deficit"]
+P = 1:json_data["Parameters"]["Time (h)"]
+penalty_deficit = 9999
 println("P: ", P)
 #Demanda = Float64.(bus["load"])
 print("Demanda: ", Demanda)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Dados
 #Demanda = [90, 90, 110, 90, 90, 90, 90, 90]
@@ -162,7 +222,9 @@ println("Status: ", status)
 if status != MOI.OPTIMAL && status != MOI.LOCALLY_SOLVED
     println("Solver did not find an optimal solution. Terminating.")
 else
-    println("Objective (total cost): ", objective_value(model))
+    #println("Objective (total cost): ", objective_value(model))
+    @printf("Objective (total cost): %.0f\n", objective_value(model))
+
 end
 
 # --------------------------
@@ -208,7 +270,8 @@ for t in P
 
     println(join(row, "\t"))
 end
-println("Objective (total cost): ", objective_value(model))
+#println("Objective (total cost): ", objective_value(model))
+@printf("Objective (total cost): %.0f\n", objective_value(model))
 
 #println("\nTabela de Unit (u):")
 #header = ["Periodo" ; string.(N)]  # first column is period, then unit names

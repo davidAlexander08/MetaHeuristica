@@ -14,15 +14,16 @@ from neometaheuristica.VNS import *
 
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON.json"
-arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json"
-#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON_sanidade.json"
+#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance_teste.json"
+arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON_sanidade.json"
+arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/10_0_1_w.json" #138735335 OTIMALIDADE
+arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/10_0_3_w.json" #131001977 OTIMALIDADE
+arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/20_0_1_w.json" #199058315 OTIMALIDADE
+#arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/50_0_1_w.json" 
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TOFF_sanidade.json"
 # Read JSON file
-sistema_inicial = leitura_json(arquivo)
-
-
-
-
+#sistema_inicial = leitura_json(arquivo)
+sistema_inicial = leitura_json_orlib(arquivo)
 #gera_log_informacoes(sistema_inicial)
 
 #EXECUTA ILS
@@ -36,19 +37,6 @@ df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
 df_generation["DEMANDA"] = solucao.demanda
 print(df_generation)
 
-#rows = []
-#for t_idx, t in enumerate(solucao.estagios):
-#    total_gen = 0
-#    for termica in solucao.geradores:
-#        total_gen += termica.geracoes[t_idx]
-#    rows.append({
-#        "Period": t,
-#        "Demand": solucao.demanda[t_idx],
-#        "TotalGen": total_gen
-#    })
-#
-#df_summary = pd.DataFrame(rows)
-#print(df_summary) 
 
 exit(1)
 

@@ -1,0 +1,2471 @@
+{
+    "LICENSE": "All of the material available from OR-Library is freely available for use. As such the MIT licence, reproduced below, applies:\n\nCopyright (c) (2010) (J E Beasley} Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. \n",
+    "SOURCE": "J.E.Beasley. \"OR-Library: distributing test problems by electronic mail\", Journal of the Operational Research Society 41(11) (1990). DOI: 10.2307/2582903\nA. Frangioni, C. Gentile. \"Solving nonlinear single-unit commitment problems with ramping constraints\" Operations Research 54(4), p. 767 - 775, 2006. DOI: 10.1287/opre.1060.0309\n",
+    "Parameters": {
+        "Time (h)": 24,
+        "Version": "0.3"
+    },
+    "Generators": {
+        "g0": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                33.0,
+                56.0,
+                79.0,
+                102.0,
+                125.0
+            ],
+            "Production cost curve ($)": [
+                2685.4895420000003,
+                3651.570364,
+                4639.569772,
+                5649.487766,
+                6681.324346
+            ],
+            "Initial status (h)": 4,
+            "Initial power (MW)": 52.246737,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                199.01821
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 39.535111,
+            "Ramp down limit (MW)": 42.095759
+        },
+        "g1": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                46.0,
+                64.5,
+                83.0,
+                101.5,
+                120.0
+            ],
+            "Production cost curve ($)": [
+                3840.340177,
+                4754.92735025,
+                5678.784707000001,
+                6611.912247249999,
+                7554.309971
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                167.864454
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 35.702027,
+            "Ramp down limit (MW)": 24.855574
+        },
+        "g2": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                37.0,
+                54.25,
+                71.5,
+                88.75,
+                106.0
+            ],
+            "Production cost curve ($)": [
+                3247.6584350000003,
+                4144.1918268125,
+                5069.88217775,
+                6024.729487812499,
+                7008.733757
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 49.921047,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                164.582071
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 26.398546,
+            "Ramp down limit (MW)": 23.75718
+        },
+        "g3": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                32.0,
+                53.25,
+                74.5,
+                95.75,
+                117.0
+            ],
+            "Production cost curve ($)": [
+                2489.9079699999998,
+                3408.3947809375,
+                4396.82952625,
+                5455.2122059375,
+                6583.54282
+            ],
+            "Initial status (h)": 6,
+            "Initial power (MW)": 97.303383,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                175.998049
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 40.736241,
+            "Ramp down limit (MW)": 29.50909
+        },
+        "g4": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                49.0,
+                62.0,
+                75.0,
+                88.0,
+                101.0
+            ],
+            "Production cost curve ($)": [
+                3913.036123,
+                4576.351698,
+                5258.667943,
+                5959.984858,
+                6680.302443
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                155.370646
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 24.56166,
+            "Ramp down limit (MW)": 25.995604
+        },
+        "g5": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                37.0,
+                53.75,
+                70.5,
+                87.25,
+                104.0
+            ],
+            "Production cost curve ($)": [
+                2930.467374,
+                3711.206582,
+                4504.748418,
+                5311.092882,
+                6130.239974
+            ],
+            "Initial status (h)": 1,
+            "Initial power (MW)": 72.680829,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                159.96551
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 28.93614,
+            "Ramp down limit (MW)": 26.847295
+        },
+        "g6": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                31.0,
+                53.25,
+                75.5,
+                97.75,
+                120.0
+            ],
+            "Production cost curve ($)": [
+                2974.842768,
+                4094.6058410625,
+                5252.78675425,
+                6449.3855075625,
+                7684.402101
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 57.01994,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                163.168709
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 43.656099,
+            "Ramp down limit (MW)": 37.841862
+        },
+        "g7": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                35.0,
+                57.5,
+                80.0,
+                102.5,
+                125.0
+            ],
+            "Production cost curve ($)": [
+                3037.67644,
+                4081.9493650000004,
+                5152.923940000001,
+                6250.600165,
+                7374.97804
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 88.281878,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                191.264814
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 34.103741,
+            "Ramp down limit (MW)": 30.926967
+        },
+        "g8": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                32.0,
+                53.5,
+                75.0,
+                96.5,
+                118.0
+            ],
+            "Production cost curve ($)": [
+                2943.487386,
+                4010.0939795000004,
+                5151.72005,
+                6368.3655975,
+                7660.030622
+            ],
+            "Initial status (h)": -6,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                178.786322
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 29.40562,
+            "Ramp down limit (MW)": 41.31081
+        },
+        "g9": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                47.0,
+                64.5,
+                82.0,
+                99.5,
+                117.0
+            ],
+            "Production cost curve ($)": [
+                3655.217423,
+                4415.1066842499995,
+                5181.773258,
+                5955.21714425,
+                6735.438343
+            ],
+            "Initial status (h)": -4,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                156.878144
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 34.441011,
+            "Ramp down limit (MW)": 27.429171
+        },
+        "g10": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                44.0,
+                62.25,
+                80.5,
+                98.75,
+                117.0
+            ],
+            "Production cost curve ($)": [
+                3239.814132,
+                4101.6583233125,
+                5000.18002325,
+                5935.3792318125,
+                6907.255949
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 76.734172,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                175.814161
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 31.492907,
+            "Ramp down limit (MW)": 32.266032
+        },
+        "g11": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                47.0,
+                60.75,
+                74.5,
+                88.25,
+                102.0
+            ],
+            "Production cost curve ($)": [
+                3478.160914,
+                4088.334977125,
+                4714.7842965,
+                5357.5088721249995,
+                6016.508704
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 63.074607,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                141.416238
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 24.836181,
+            "Ramp down limit (MW)": 25.570258
+        },
+        "g12": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                31.0,
+                49.75,
+                68.5,
+                87.25,
+                106.0
+            ],
+            "Production cost curve ($)": [
+                2700.563974,
+                3510.2096599375,
+                4343.83964275,
+                5201.4539224375,
+                6083.052498999999
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                152.806254
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 28.834656,
+            "Ramp down limit (MW)": 31.375273
+        },
+        "g13": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                45.0,
+                65.5,
+                86.0,
+                106.5,
+                127.0
+            ],
+            "Production cost curve ($)": [
+                3632.358079,
+                4689.635329000001,
+                5792.773621,
+                6941.7729549999995,
+                8136.633331
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 78.611186,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                178.999929
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 39.176925,
+            "Ramp down limit (MW)": 39.958628
+        },
+        "g14": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                39.0,
+                56.25,
+                73.5,
+                90.75,
+                108.0
+            ],
+            "Production cost curve ($)": [
+                3156.028123,
+                3926.0374136875,
+                4714.41880825,
+                5521.1723066875,
+                6346.297909
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                146.915611
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 23.532423,
+            "Ramp down limit (MW)": 29.867217
+        },
+        "g15": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                40.0,
+                56.75,
+                73.5,
+                90.25,
+                107.0
+            ],
+            "Production cost curve ($)": [
+                3664.898374,
+                4570.2824431875,
+                5505.32477425,
+                6470.0253671875,
+                7464.384222
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                149.015578
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 22.439715,
+            "Ramp down limit (MW)": 33.364835
+        },
+        "g16": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                36.0,
+                56.75,
+                77.5,
+                98.25,
+                119.0
+            ],
+            "Production cost curve ($)": [
+                3332.742652,
+                4377.2858815625,
+                5441.30517525,
+                6524.8005330625,
+                7627.771955
+            ],
+            "Initial status (h)": 1,
+            "Initial power (MW)": 97.27373,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                161.106528
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 32.069736,
+            "Ramp down limit (MW)": 33.667163
+        },
+        "g17": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                32.0,
+                56.0,
+                80.0,
+                104.0,
+                128.0
+            ],
+            "Production cost curve ($)": [
+                3003.6813629999997,
+                4175.332203,
+                5438.849283,
+                6794.232603,
+                8241.482163
+            ],
+            "Initial status (h)": -5,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                183.957183
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 39.579142,
+            "Ramp down limit (MW)": 34.573194
+        },
+        "g18": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                35.0,
+                55.5,
+                76.0,
+                96.5,
+                117.0
+            ],
+            "Production cost curve ($)": [
+                2708.145613,
+                3648.1620224999997,
+                4659.116632,
+                5741.0094415,
+                6893.840451
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 88.965054,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                179.911498
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 30.051254,
+            "Ramp down limit (MW)": 34.004681
+        },
+        "g19": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                37.0,
+                55.25,
+                73.5,
+                91.75,
+                110.0
+            ],
+            "Production cost curve ($)": [
+                2823.192873,
+                3604.8060995000005,
+                4411.1751955,
+                5242.300161,
+                6098.180996
+            ],
+            "Initial status (h)": -4,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                153.137719
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 32.418854,
+            "Ramp down limit (MW)": 27.291239
+        },
+        "g20": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                42.0,
+                62.75,
+                83.5,
+                104.25,
+                125.0
+            ],
+            "Production cost curve ($)": [
+                3205.047018,
+                4179.11486975,
+                5174.865849000001,
+                6192.299955750001,
+                7231.41719
+            ],
+            "Initial status (h)": -6,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                184.378739
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 37.130277,
+            "Ramp down limit (MW)": 32.972846
+        },
+        "g21": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                38.0,
+                60.75,
+                83.5,
+                106.25,
+                129.0
+            ],
+            "Production cost curve ($)": [
+                2952.401381,
+                4052.54472075,
+                5241.431397,
+                6519.06140975,
+                7885.434759
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                169.599011
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 39.599108,
+            "Ramp down limit (MW)": 38.423328
+        },
+        "g22": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                31.0,
+                51.25,
+                71.5,
+                91.75,
+                112.0
+            ],
+            "Production cost curve ($)": [
+                2762.053736,
+                3655.9865485624996,
+                4590.40483175,
+                5565.3085855625,
+                6580.69781
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                152.564994
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 33.54552,
+            "Ramp down limit (MW)": 30.229696
+        },
+        "g23": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                49.0,
+                64.75,
+                80.5,
+                96.25,
+                112.0
+            ],
+            "Production cost curve ($)": [
+                3561.5258360000003,
+                4368.1602865625,
+                5202.0146352500005,
+                6063.0888820625005,
+                6951.383027
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 69.474912,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                176.693072
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 29.55726,
+            "Ramp down limit (MW)": 25.318495
+        },
+        "g24": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                44.0,
+                58.25,
+                72.5,
+                86.75,
+                101.0
+            ],
+            "Production cost curve ($)": [
+                3303.3422259999998,
+                3972.2188328125,
+                4653.5151482500005,
+                5347.2311723125,
+                6053.366905
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                147.602445
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 26.626531,
+            "Ramp down limit (MW)": 23.094006
+        },
+        "g25": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                34.0,
+                57.25,
+                80.5,
+                103.75,
+                127.0
+            ],
+            "Production cost curve ($)": [
+                3023.642052,
+                4128.507522375,
+                5280.321927,
+                6479.085265875,
+                7724.797539
+            ],
+            "Initial status (h)": -7,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                183.129748
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 33.507523,
+            "Ramp down limit (MW)": 31.578323
+        },
+        "g26": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                47.0,
+                62.25,
+                77.5,
+                92.75,
+                108.0
+            ],
+            "Production cost curve ($)": [
+                3671.5008159999998,
+                4400.1393233125,
+                5134.88445675,
+                5875.7362163125,
+                6622.694602
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                151.557696
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 28.308392,
+            "Ramp down limit (MW)": 21.91506
+        },
+        "g27": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                43.0,
+                61.25,
+                79.5,
+                97.75,
+                116.0
+            ],
+            "Production cost curve ($)": [
+                3720.1647949999997,
+                4682.619890375,
+                5697.1166675,
+                6763.655126375,
+                7882.235266999999
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 61.147739,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                183.356504
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 25.945206,
+            "Ramp down limit (MW)": 31.614871
+        },
+        "g28": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                34.0,
+                52.5,
+                71.0,
+                89.5,
+                108.0
+            ],
+            "Production cost curve ($)": [
+                3001.383345,
+                3861.202332,
+                4738.376132,
+                5632.904745000001,
+                6544.788171
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 47.816224,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                159.766791
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 35.268206,
+            "Ramp down limit (MW)": 25.389977
+        },
+        "g29": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                34.0,
+                52.25,
+                70.5,
+                88.75,
+                107.0
+            ],
+            "Production cost curve ($)": [
+                2917.889182,
+                3683.7040359375,
+                4464.79113775,
+                5261.1504874375005,
+                6072.782085000001
+            ],
+            "Initial status (h)": 6,
+            "Initial power (MW)": 61.597573,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                167.887072
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 33.619964,
+            "Ramp down limit (MW)": 32.634475
+        },
+        "g30": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                49.0,
+                64.75,
+                80.5,
+                96.25,
+                112.0
+            ],
+            "Production cost curve ($)": [
+                3845.467606,
+                4660.5574165,
+                5513.832976,
+                6405.2942845,
+                7334.941342
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                175.748869
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 28.242211,
+            "Ramp down limit (MW)": 23.346382
+        },
+        "g31": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                33.0,
+                55.25,
+                77.5,
+                99.75,
+                122.0
+            ],
+            "Production cost curve ($)": [
+                2964.7753089999997,
+                4058.1508888750004,
+                5168.986333,
+                6297.281641374999,
+                7443.036813999999
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                165.676297
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 43.888779,
+            "Ramp down limit (MW)": 33.698425
+        },
+        "g32": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                36.0,
+                54.0,
+                72.0,
+                90.0,
+                108.0
+            ],
+            "Production cost curve ($)": [
+                2926.159801,
+                3801.594517,
+                4729.421329,
+                5709.640237,
+                6742.251241
+            ],
+            "Initial status (h)": -4,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                167.63307
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 24.355964,
+            "Ramp down limit (MW)": 33.413078
+        },
+        "g33": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                34.0,
+                53.0,
+                72.0,
+                91.0,
+                110.0
+            ],
+            "Production cost curve ($)": [
+                3104.8775450000003,
+                4014.274203,
+                4964.081201,
+                5954.298539,
+                6984.926217
+            ],
+            "Initial status (h)": 6,
+            "Initial power (MW)": 76.216612,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                144.490277
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 30.099514,
+            "Ramp down limit (MW)": 29.881771
+        },
+        "g34": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                33.0,
+                50.75,
+                68.5,
+                86.25,
+                104.0
+            ],
+            "Production cost curve ($)": [
+                2657.4378079999997,
+                3452.4452338124993,
+                4274.14790525,
+                5122.5458223125,
+                5997.638985
+            ],
+            "Initial status (h)": -2,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                137.760334
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 27.171551,
+            "Ramp down limit (MW)": 26.860644
+        },
+        "g35": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                50.0,
+                66.25,
+                82.5,
+                98.75,
+                115.0
+            ],
+            "Production cost curve ($)": [
+                3849.792773,
+                4642.261978937499,
+                5448.554856749999,
+                6268.671406437499,
+                7102.611628
+            ],
+            "Initial status (h)": -5,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                159.697576
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 25.491846,
+            "Ramp down limit (MW)": 23.302492
+        },
+        "g36": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                34.0,
+                51.5,
+                69.0,
+                86.5,
+                104.0
+            ],
+            "Production cost curve ($)": [
+                2802.1643839999997,
+                3558.501574,
+                4336.502888999999,
+                5136.168329,
+                5957.497893999999
+            ],
+            "Initial status (h)": 4,
+            "Initial power (MW)": 61.671879,
+            "Minimum uptime (h)": 4,
+            "Minimum downtime (h)": 3,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                165.003923
+            ],
+            "Startup delays (h)": [
+                3
+            ],
+            "Ramp up limit (MW)": 27.326982,
+            "Ramp down limit (MW)": 31.729754
+        },
+        "g37": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                39.0,
+                59.25,
+                79.5,
+                99.75,
+                120.0
+            ],
+            "Production cost curve ($)": [
+                3003.767151,
+                3898.1119953750003,
+                4814.191792500001,
+                5752.006542375,
+                6711.556245000001
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 91.66133,
+            "Minimum uptime (h)": 3,
+            "Minimum downtime (h)": 4,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                185.252203
+            ],
+            "Startup delays (h)": [
+                4
+            ],
+            "Ramp up limit (MW)": 35.673018,
+            "Ramp down limit (MW)": 30.726311
+        },
+        "g38": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                51.0,
+                91.25,
+                131.5,
+                171.75,
+                212.0
+            ],
+            "Production cost curve ($)": [
+                4940.824543,
+                7412.7326495,
+                9909.4082715,
+                12430.851409,
+                14977.062061999999
+            ],
+            "Initial status (h)": -5,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                337.524865
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 55.94496,
+            "Ramp down limit (MW)": 63.030943
+        },
+        "g39": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                63.0,
+                96.25,
+                129.5,
+                162.75,
+                196.0
+            ],
+            "Production cost curve ($)": [
+                6072.398491,
+                8188.1740536875,
+                10323.14881475,
+                12477.3227741875,
+                14650.695932
+            ],
+            "Initial status (h)": -8,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                289.600139
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 60.353269,
+            "Ramp down limit (MW)": 61.274114
+        },
+        "g40": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                53.0,
+                83.5,
+                114.0,
+                144.5,
+                175.0
+            ],
+            "Production cost curve ($)": [
+                6013.725623,
+                7837.279326,
+                9676.677047000001,
+                11531.918786000002,
+                13403.004543000001
+            ],
+            "Initial status (h)": -5,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                272.141025
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 44.885185,
+            "Ramp down limit (MW)": 43.079497
+        },
+        "g41": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                58.0,
+                87.75,
+                117.5,
+                147.25,
+                177.0
+            ],
+            "Production cost curve ($)": [
+                5544.138326,
+                7416.882418187501,
+                9305.067310749999,
+                11208.6930036875,
+                13127.759497000001
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                246.277536
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 43.800845,
+            "Ramp down limit (MW)": 40.687381
+        },
+        "g42": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                51.0,
+                81.75,
+                112.5,
+                143.25,
+                174.0
+            ],
+            "Production cost curve ($)": [
+                4950.08582,
+                6648.4651075625,
+                8361.17344925,
+                10088.2108450625,
+                11829.577295
+            ],
+            "Initial status (h)": -8,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                246.648026
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 60.24315,
+            "Ramp down limit (MW)": 43.179162
+        },
+        "g43": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                63.0,
+                91.5,
+                120.0,
+                148.5,
+                177.0
+            ],
+            "Production cost curve ($)": [
+                6324.964247,
+                8019.11307425,
+                9725.505758,
+                11444.142298249999,
+                13175.022695000001
+            ],
+            "Initial status (h)": -8,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                232.277787
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 56.591978,
+            "Ramp down limit (MW)": 38.058048
+        },
+        "g44": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                64.0,
+                91.75,
+                119.5,
+                147.25,
+                175.0
+            ],
+            "Production cost curve ($)": [
+                6887.958476,
+                8664.9503928125,
+                10454.91786275,
+                12257.8608858125,
+                14073.779461999999
+            ],
+            "Initial status (h)": -4,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                229.552181
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 48.586083,
+            "Ramp down limit (MW)": 49.026719
+        },
+        "g45": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                69.0,
+                95.5,
+                122.0,
+                148.5,
+                175.0
+            ],
+            "Production cost curve ($)": [
+                6945.739,
+                8624.68599825,
+                10315.516470999999,
+                12018.230418249997,
+                13732.827840000002
+            ],
+            "Initial status (h)": 9,
+            "Initial power (MW)": 150.606397,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                254.251379
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 43.733026,
+            "Ramp down limit (MW)": 51.514199
+        },
+        "g46": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                66.0,
+                101.75,
+                137.5,
+                173.25,
+                209.0
+            ],
+            "Production cost curve ($)": [
+                6340.731234,
+                8739.290423812501,
+                11158.761272250002,
+                13599.1437793125,
+                16060.437945000001
+            ],
+            "Initial status (h)": -8,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                303.825801
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 60.560005,
+            "Ramp down limit (MW)": 54.314776
+        },
+        "g47": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                52.0,
+                85.75,
+                119.5,
+                153.25,
+                187.0
+            ],
+            "Production cost curve ($)": [
+                4749.775266,
+                6765.1307225625,
+                8797.21900725,
+                10846.0401200625,
+                12911.594060999998
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                243.338389
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 66.070675,
+            "Ramp down limit (MW)": 57.406397
+        },
+        "g48": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                60.0,
+                96.0,
+                132.0,
+                168.0,
+                204.0
+            ],
+            "Production cost curve ($)": [
+                6047.842833,
+                8335.161441,
+                10644.377265,
+                12975.490305,
+                15328.500560999999
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                317.583691
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 60.891526,
+            "Ramp down limit (MW)": 65.515004
+        },
+        "g49": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                68.0,
+                105.25,
+                142.5,
+                179.75,
+                217.0
+            ],
+            "Production cost curve ($)": [
+                6328.215711000001,
+                8662.795456187501,
+                11019.173808250001,
+                13397.350767187501,
+                15797.326333
+            ],
+            "Initial status (h)": 3,
+            "Initial power (MW)": 145.965879,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                324.606811
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 62.076391,
+            "Ramp down limit (MW)": 60.976652
+        },
+        "g50": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                62.0,
+                89.5,
+                117.0,
+                144.5,
+                172.0
+            ],
+            "Production cost curve ($)": [
+                5938.298352,
+                7706.760060750001,
+                9488.118857,
+                11282.37474075,
+                13089.527712000001
+            ],
+            "Initial status (h)": -2,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                227.952504
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 39.889306,
+            "Ramp down limit (MW)": 51.440197
+        },
+        "g51": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                51.0,
+                92.25,
+                133.5,
+                174.75,
+                216.0
+            ],
+            "Production cost curve ($)": [
+                5986.77448,
+                8623.748080937501,
+                11288.120241250002,
+                13979.8909609375,
+                16699.06024
+            ],
+            "Initial status (h)": -4,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                337.580413
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 71.162473,
+            "Ramp down limit (MW)": 72.969656
+        },
+        "g52": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                55.0,
+                94.25,
+                133.5,
+                172.75,
+                212.0
+            ],
+            "Production cost curve ($)": [
+                5689.907343000001,
+                8135.398433875,
+                10606.333455,
+                13102.712406375002,
+                15624.535288
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 114.979295,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                306.906237
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 69.217155,
+            "Ramp down limit (MW)": 72.241803
+        },
+        "g53": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                59.0,
+                98.5,
+                138.0,
+                177.5,
+                217.0
+            ],
+            "Production cost curve ($)": [
+                5503.467310999999,
+                8045.8475229999995,
+                10615.145168,
+                13211.360246,
+                15834.492757
+            ],
+            "Initial status (h)": 8,
+            "Initial power (MW)": 75.206961,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                311.987423
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 73.588212,
+            "Ramp down limit (MW)": 62.973606
+        },
+        "g54": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                63.0,
+                95.0,
+                127.0,
+                159.0,
+                191.0
+            ],
+            "Production cost curve ($)": [
+                5849.353072,
+                7864.98728,
+                9898.36536,
+                11949.487312,
+                14018.353136
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                302.253951
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 52.205128,
+            "Ramp down limit (MW)": 56.952365
+        },
+        "g55": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                67.0,
+                99.5,
+                132.0,
+                164.5,
+                197.0
+            ],
+            "Production cost curve ($)": [
+                5975.196406,
+                7999.818778499999,
+                10041.886176,
+                12101.3985985,
+                14178.356045999999
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                308.94344
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 46.795835,
+            "Ramp down limit (MW)": 46.89932
+        },
+        "g56": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                57.0,
+                88.75,
+                120.5,
+                152.25,
+                184.0
+            ],
+            "Production cost curve ($)": [
+                4944.159899,
+                6770.7626323125005,
+                8612.55283525,
+                10469.530507812498,
+                12341.695650000001
+            ],
+            "Initial status (h)": -5,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                246.594954
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 45.592908,
+            "Ramp down limit (MW)": 51.849717
+        },
+        "g57": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                56.0,
+                94.0,
+                132.0,
+                170.0,
+                208.0
+            ],
+            "Production cost curve ($)": [
+                5875.609871,
+                8146.557853,
+                10440.939067,
+                12758.753513,
+                15100.001191
+            ],
+            "Initial status (h)": -6,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                284.685423
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 51.531527,
+            "Ramp down limit (MW)": 60.455527
+        },
+        "g58": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                59.0,
+                93.25,
+                127.5,
+                161.75,
+                196.0
+            ],
+            "Production cost curve ($)": [
+                6416.752321,
+                8713.091195625,
+                11029.2548265,
+                13365.243213624999,
+                15721.056357000001
+            ],
+            "Initial status (h)": -8,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 7,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                270.520346
+            ],
+            "Startup delays (h)": [
+                7
+            ],
+            "Ramp up limit (MW)": 48.664084,
+            "Ramp down limit (MW)": 65.329407
+        },
+        "g59": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                62.0,
+                91.0,
+                120.0,
+                149.0,
+                178.0
+            ],
+            "Production cost curve ($)": [
+                5464.414385,
+                7150.073373000001,
+                8848.944471,
+                10561.027678999999,
+                12286.322997000001
+            ],
+            "Initial status (h)": 4,
+            "Initial power (MW)": 132.731822,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                256.467308
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 40.534413,
+            "Ramp down limit (MW)": 40.475882
+        },
+        "g60": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                60.0,
+                89.75,
+                119.5,
+                149.25,
+                179.0
+            ],
+            "Production cost curve ($)": [
+                5619.078262999999,
+                7365.397030374999,
+                9126.177719,
+                10901.420328875,
+                12691.12486
+            ],
+            "Initial status (h)": -10,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                258.800174
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 57.258152,
+            "Ramp down limit (MW)": 42.121917
+        },
+        "g61": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                53.0,
+                83.75,
+                114.5,
+                145.25,
+                176.0
+            ],
+            "Production cost curve ($)": [
+                5340.110928,
+                7241.7357922500005,
+                9158.3837535,
+                11090.05481175,
+                13036.748967
+            ],
+            "Initial status (h)": -4,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 8,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                257.208768
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 47.263031,
+            "Ramp down limit (MW)": 54.867788
+        },
+        "g62": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                56.0,
+                86.5,
+                117.0,
+                147.5,
+                178.0
+            ],
+            "Production cost curve ($)": [
+                5659.1144380000005,
+                7393.82007025,
+                9142.618989999999,
+                10905.51119725,
+                12682.496691999999
+            ],
+            "Initial status (h)": -2,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 7,
+            "Minimum downtime (h)": 8,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                272.951776
+            ],
+            "Startup delays (h)": [
+                8
+            ],
+            "Ramp up limit (MW)": 45.863705,
+            "Ramp down limit (MW)": 59.851478
+        },
+        "g63": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                85.0,
+                134.0,
+                183.0,
+                232.0,
+                281.0
+            ],
+            "Production cost curve ($)": [
+                8074.174544,
+                10542.9878,
+                13027.652458,
+                15528.168517999999,
+                18044.53598
+            ],
+            "Initial status (h)": -12,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 11,
+            "Minimum downtime (h)": 13,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                437.662435
+            ],
+            "Startup delays (h)": [
+                13
+            ],
+            "Ramp up limit (MW)": 85.554673,
+            "Ramp down limit (MW)": 92.063472
+        },
+        "g64": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                89.0,
+                149.0,
+                209.0,
+                269.0,
+                329.0
+            ],
+            "Production cost curve ($)": [
+                8294.349832,
+                11651.307052,
+                15052.522672,
+                18497.996692,
+                21987.729111999997
+            ],
+            "Initial status (h)": 12,
+            "Initial power (MW)": 185.977409,
+            "Minimum uptime (h)": 14,
+            "Minimum downtime (h)": 10,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                523.788455
+            ],
+            "Startup delays (h)": [
+                10
+            ],
+            "Ramp up limit (MW)": 112.515201,
+            "Ramp down limit (MW)": 80.44807
+        },
+        "g65": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                79.0,
+                132.75,
+                186.5,
+                240.25,
+                294.0
+            ],
+            "Production cost curve ($)": [
+                7579.533014999999,
+                10469.9190953125,
+                13379.95657875,
+                16309.645465312498,
+                19258.985755
+            ],
+            "Initial status (h)": -1,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 11,
+            "Minimum downtime (h)": 11,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                448.394148
+            ],
+            "Startup delays (h)": [
+                11
+            ],
+            "Ramp up limit (MW)": 93.990169,
+            "Ramp down limit (MW)": 105.30618
+        },
+        "g66": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                86.0,
+                142.25,
+                198.5,
+                254.75,
+                311.0
+            ],
+            "Production cost curve ($)": [
+                8407.32188,
+                11781.915698750001,
+                15185.69483,
+                18618.65927375,
+                22080.809029999997
+            ],
+            "Initial status (h)": 11,
+            "Initial power (MW)": 243.991737,
+            "Minimum uptime (h)": 10,
+            "Minimum downtime (h)": 11,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                487.497346
+            ],
+            "Startup delays (h)": [
+                11
+            ],
+            "Ramp up limit (MW)": 81.956472,
+            "Ramp down limit (MW)": 100.615186
+        },
+        "g67": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                91.0,
+                141.5,
+                192.0,
+                242.5,
+                293.0
+            ],
+            "Production cost curve ($)": [
+                7755.1620299999995,
+                10498.307763750001,
+                13265.165722,
+                16055.735904750001,
+                18870.018312
+            ],
+            "Initial status (h)": 2,
+            "Initial power (MW)": 180.286581,
+            "Minimum uptime (h)": 10,
+            "Minimum downtime (h)": 12,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                398.396388
+            ],
+            "Startup delays (h)": [
+                12
+            ],
+            "Ramp up limit (MW)": 85.477884,
+            "Ramp down limit (MW)": 96.096864
+        },
+        "g68": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                93.0,
+                142.0,
+                191.0,
+                240.0,
+                289.0
+            ],
+            "Production cost curve ($)": [
+                8941.285523,
+                11847.816367,
+                14777.348791,
+                17729.882795,
+                20705.418378999995
+            ],
+            "Initial status (h)": -3,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 14,
+            "Minimum downtime (h)": 11,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                458.157532
+            ],
+            "Startup delays (h)": [
+                11
+            ],
+            "Ramp up limit (MW)": 69.506731,
+            "Ramp down limit (MW)": 79.621845
+        },
+        "g69": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                94.0,
+                144.25,
+                194.5,
+                244.75,
+                295.0
+            ],
+            "Production cost curve ($)": [
+                7809.336995,
+                10475.074068499998,
+                13159.840013,
+                15863.634828499999,
+                18586.458515
+            ],
+            "Initial status (h)": 13,
+            "Initial power (MW)": 186.43072,
+            "Minimum uptime (h)": 10,
+            "Minimum downtime (h)": 10,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                402.288001
+            ],
+            "Startup delays (h)": [
+                10
+            ],
+            "Ramp up limit (MW)": 67.53847,
+            "Ramp down limit (MW)": 88.457014
+        },
+        "g70": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                71.0,
+                132.5,
+                194.0,
+                255.5,
+                317.0
+            ],
+            "Production cost curve ($)": [
+                7457.741834,
+                10713.82246475,
+                14009.624285000002,
+                17345.14729475,
+                20720.391494
+            ],
+            "Initial status (h)": 5,
+            "Initial power (MW)": 226.880193,
+            "Minimum uptime (h)": 12,
+            "Minimum downtime (h)": 11,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                484.467367
+            ],
+            "Startup delays (h)": [
+                11
+            ],
+            "Ramp up limit (MW)": 113.629888,
+            "Ramp down limit (MW)": 90.242151
+        },
+        "g71": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                74.0,
+                129.5,
+                185.0,
+                240.5,
+                296.0
+            ],
+            "Production cost curve ($)": [
+                7843.215739,
+                11136.7305385,
+                14441.482090000001,
+                17757.4703935,
+                21084.695449000003
+            ],
+            "Initial status (h)": -8,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 10,
+            "Minimum downtime (h)": 12,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                390.708157
+            ],
+            "Startup delays (h)": [
+                12
+            ],
+            "Ramp up limit (MW)": 81.552953,
+            "Ramp down limit (MW)": 96.813391
+        },
+        "g72": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                72.0,
+                126.5,
+                181.0,
+                235.5,
+                290.0
+            ],
+            "Production cost curve ($)": [
+                6775.365963,
+                9649.19382725,
+                12540.195677,
+                15448.37151225,
+                18373.721332999998
+            ],
+            "Initial status (h)": 11,
+            "Initial power (MW)": 165.187234,
+            "Minimum uptime (h)": 13,
+            "Minimum downtime (h)": 12,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                437.28534
+            ],
+            "Startup delays (h)": [
+                12
+            ],
+            "Ramp up limit (MW)": 97.487859,
+            "Ramp down limit (MW)": 85.809564
+        },
+        "g73": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                75.0,
+                138.0,
+                201.0,
+                264.0,
+                327.0
+            ],
+            "Production cost curve ($)": [
+                7457.3047559999995,
+                11243.405928,
+                15063.188034,
+                18916.651074,
+                22803.795048
+            ],
+            "Initial status (h)": -11,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 10,
+            "Minimum downtime (h)": 13,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                442.364149
+            ],
+            "Startup delays (h)": [
+                13
+            ],
+            "Ramp up limit (MW)": 104.763451,
+            "Ramp down limit (MW)": 122.996593
+        },
+        "g74": {
+            "Bus": "b1",
+            "Production cost curve (MW)": [
+                83.0,
+                132.25,
+                181.5,
+                230.75,
+                280.0
+            ],
+            "Production cost curve ($)": [
+                7459.983682,
+                9996.687672,
+                12549.380969999998,
+                15118.063576,
+                17702.73549
+            ],
+            "Initial status (h)": -12,
+            "Initial power (MW)": 0.0,
+            "Minimum uptime (h)": 12,
+            "Minimum downtime (h)": 12,
+            "Reserve eligibility": [
+                "r1"
+            ],
+            "Startup costs ($)": [
+                431.660819
+            ],
+            "Startup delays (h)": [
+                12
+            ],
+            "Ramp up limit (MW)": 70.180033,
+            "Ramp down limit (MW)": 70.859523
+        }
+    },
+    "Buses": {
+        "b1": {
+            "Load (MW)": [
+                5271.483364,
+                4989.776816,
+                4071.651536,
+                4042.29057,
+                4114.50267,
+                4432.712037,
+                5300.844329,
+                6471.315191,
+                7557.670864,
+                7895.71872,
+                7935.3957,
+                8040.825367,
+                7900.479961,
+                7266.441841,
+                7491.80708,
+                7555.290247,
+                7522.755126,
+                7314.847759,
+                7027.586433,
+                7122.811178,
+                7320.402532,
+                6944.264777,
+                6313.400817,
+                5723.800917
+            ]
+        }
+    },
+    "Reserves": {
+        "r1": {
+            "Type": "Spinning",
+            "Amount (MW)": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ]
+        }
+    }
+}
