@@ -4,10 +4,12 @@ from neometaheuristica.algoritmo_guloso import *
 from neometaheuristica.neighbour import *
 import pandas as pd
 
-def ILS(sistema_inicial, n_iter=100):
-    sol_best = solucao_gulosa(sistema_inicial)
+def ILS(sistema_inicial, n_iter=300):
+    #sol_best = solucao_gulosa(sistema_inicial)
+    sol_best = nova_solucao_gulosa(sistema_inicial)
     
-    gera_log_unitcommitment(sol_best)
+    #gera_log_informacoes(sol_best)
+    #gera_log_unitcommitment(sol_best)
     executa_solucao_pl(sol_best)
     
     #exit(1)
@@ -29,7 +31,7 @@ def ILS(sistema_inicial, n_iter=100):
     lista_df.append(df)
 
     for iter in range(n_iter):
-        #print("iter: ",  iter, " sol_curr: ", sol_curr.total_cost)
+        print("iter: ",  iter, " sol_curr: ", sol_curr.total_cost)
         sol_new = neighbor(copy.deepcopy(sol_curr))
         cost_new = sol_new.total_cost
         delta_fob = cost_new - cost_curr   

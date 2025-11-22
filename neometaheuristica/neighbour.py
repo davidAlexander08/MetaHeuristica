@@ -13,7 +13,6 @@ from itertools import groupby
 # Variação de solução (neighbor)
 # --------------------------
 def neighbor(sistema_neighbour):
-
     ### METODOS QUE RE-RODAM O GULOSO
     mapa_sistemas = {}
     max_grau = 6
@@ -22,6 +21,9 @@ def neighbor(sistema_neighbour):
         mapa_sistemas[sistema_1.total_cost] = sistema_1
     lowest_system = mapa_sistemas[min(mapa_sistemas.keys())]
     sistema_resultante = lowest_system
+
+
+
     return lowest_system
 
 def sorteia_periodo_retorna_listas(sistema):
@@ -37,7 +39,6 @@ def forca_ligar(sistema_neighbour, grau):
         t, usinas_ligadas, lista_usinas_desligadas_periodo = sorteia_periodo_retorna_listas(sistema_neighbour)
         nome_usina_ser_ligada = random.choice(lista_usinas_desligadas_periodo)
         #print(t, "nome_usina_ser_ligada: ", nome_usina_ser_ligada )
-
         unit_a_ser_ligada = sistema_new.getUsina(nome_usina_ser_ligada)
         for i in range(unit_a_ser_ligada.t_on):
             indice = min(t-1 +i, sistema_new.n_estagios-1)
