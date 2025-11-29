@@ -17,12 +17,12 @@ def gera_log_unitcommitment(sistema):
     #print("-"*80)
 
     # Print all Commitment
-    #for t in sistema.geradores:
-    #    if t.commitment is not None and len(t.commitment) > 0:
-    #        commit_str = " ".join(str(int(x)) if x is not None else "0" for x in t.commitment)
-    #    else:
-    #        commit_str = "-"
-    #    print(f"{t.nome:<6}: {commit_str}")
+    for t in sistema.geradores:
+        if t.commitment is not None and len(t.commitment) > 0:
+            commit_str = " ".join(str(int(x)) if x is not None else "0" for x in t.commitment)
+        else:
+            commit_str = "-"
+        print(f"{t.nome:<6}: {commit_str}")
 
 
     # ---- CUSTO POR ESTÁGIO ----
@@ -47,14 +47,17 @@ def gera_log_unitcommitment(sistema):
 
 def gera_log_informacoes(sistema):
     # Print unit info
-    for t in sistema.geradores:
-        print(f"Nome: {t.nome}, LimSup: {t.limite_superior}, LimInf: {t.limite_inferior}, "
-              f"Custo: {t.custo}, T_on: {t.t_on}, T_off: {t.t_off}")
-    print("-"*80)
+    #for t in sistema.geradores:
+    #    print(f"Nome: {t.nome}, LimSup: {t.limite_superior}, LimInf: {t.limite_inferior}, "
+    #          f"Custo: {t.custo}, T_on: {t.t_on}, T_off: {t.t_off}")
+    #print("-"*80)
 #
     if sistema.demanda is not None and len(sistema.demanda) > 0:
         demanda_str = " ".join(f"{int(x):>3}" for x in sistema.demanda)
         print(f"Demanda   : {demanda_str}")
+        print("-"*80)
+        demanda_str_liq = " ".join(f"{int(x):>3}" for x in sistema.demanda_liquida)
+        print(f"Demanda LIQ   : {demanda_str_liq}")
         print("-"*80)
 #
     # Print all Gerações

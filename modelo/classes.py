@@ -28,7 +28,15 @@ class Sistema:
             for ger in self.geradores:
                 mapa[ger.nome] = ger
             self.mapaNomeUsina = mapa
-        return self.mapaNomeUsina[nome]
+        return self.mapaNomeUsina[nome]        
+
+    @property
+    def listaNomesUsinas(self):
+        listaNomesUsinas = []
+        for ger in self.geradores:
+            listaNomesUsinas.append(ger.nome)
+        return listaNomesUsinas
+
 
     @property
     def n_estagios(self):
@@ -66,5 +74,9 @@ class Sistema:
 
     @property
     def total_cost(self):
-        cost = sum(unit.custo*unit.geracoes[t] for unit in self.geradores for t in range(self.n_estagios))
+        cost = sum(unit.custo*unit.geracoes[t] for unit in self.geradores for t in range(self.n_estagios)) 
+        dem_liq_sum = self.demanda_liquida*5000 
+        for t in range(self.n_estagios):
+            valor = dem_liq_sum[t] if (dem_liq_sum[t] > 0) else -dem_liq_sum[t] 
+            cost += valor
         return cost

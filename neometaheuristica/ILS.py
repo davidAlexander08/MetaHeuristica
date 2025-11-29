@@ -4,52 +4,46 @@ from neometaheuristica.algoritmo_guloso import *
 from neometaheuristica.neighbour import *
 import pandas as pd
 
-def ILS(sistema_inicial, n_iter=300):
-    #sol_best = solucao_gulosa(sistema_inicial)
-    sol_best = nova_solucao_gulosa(sistema_inicial)
-    
-    #gera_log_informacoes(sol_best)
-    #gera_log_unitcommitment(sol_best)
+def ILS(sistema_inicial, n_iter=30, especial = False):
+    sol_best = nova_solucao_gulosa(sistema_inicial, False)
     executa_solucao_pl(sol_best)
-    
-    #exit(1)
-    custo_guloso = sol_best.total_cost
-    cost_best = sol_best.total_cost
     sol_curr = copy.deepcopy(sol_best)
-    cost_curr = cost_best
     print("#################")
     print("SOL GULOSA")
-    print("custo_guloso: ", custo_guloso)
+    print("custo_guloso: ", sol_best.total_cost)
     print("#################")
     lista_df = []
     df = pd.DataFrame(
         {
             "Iteracao":[0],
-            "Custo_Total":[custo_guloso]
+            "Custo_Total":[sol_best.total_cost]
         }
     )
     lista_df.append(df)
 
     for iter in range(n_iter):
         print("iter: ",  iter, " sol_curr: ", sol_curr.total_cost)
-        sol_new = neighbor(copy.deepcopy(sol_curr))
-        cost_new = sol_new.total_cost
-        delta_fob = cost_new - cost_curr   
+        if(especial == False):
+            sol_new = gera_vizinho_ILS(copy.deepcopy(sol_curr))
+        if(especial == True):
+            sol_new = gera_solucao_vizinhos_custom(copy.deepcopy(sol_curr))
+        delta_fob = sol_new.total_cost - sol_curr.total_cost   
         if delta_fob < 0:
-            sol_curr, cost_curr = copy.deepcopy(sol_new), cost_new
+            sol_curr= copy.deepcopy(sol_new)
             df = pd.DataFrame(
                 {
                     "Iteracao":[iter],
-                    "Custo_Total":[cost_new]
+                    "Custo_Total":[sol_new.total_cost]
                 }
             )
             lista_df.append(df)
-            if cost_curr < cost_best:
+            if sol_curr.total_cost < sol_best.total_cost:
                 print("##############################")
-                print("iter: ", iter)
-                print("cost_new: ", cost_new)
-                print("Demanda: ", sol_new.demanda)
-                sol_best, cost_best = copy.deepcopy(sol_curr), cost_curr
+                print("iter: ", iter, " sol_new.total_cost: ", sol_new.total_cost)
+                sol_best = copy.deepcopy(sol_curr)
+                gera_log_informacoes(sol_best)
+                if(sol_new.total_cost <906700 ):
+                    exit(1)
     df_fim = pd.concat(lista_df).reset_index(drop = True)
     gera_log_unitcommitment(sol_best)
-    return sol_best, cost_best, df_fim 
+    return sol_best, df_fim 

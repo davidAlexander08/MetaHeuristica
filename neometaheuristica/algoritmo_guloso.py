@@ -48,14 +48,19 @@ def verifica_futuro(t, unit, TEMPO):
 
 
 
-def nova_solucao_gulosa(sistema_inicial):    
+def nova_solucao_gulosa(sistema_inicial, ativa_random = False, flag_debug = False):    
     sistema_guloso = copy.deepcopy(sistema_inicial)
     ordem_termos = sorted(sistema_guloso.geradores, key=lambda u: u.custo)
+    if(ativa_random == True):
+        random.shuffle(ordem_termos) ###### SOLUCAO INICIAL RANDOMICA
+    
     for t in range(sistema_guloso.n_estagios):
         lista_caminho_usinas =[]
         for unit in ordem_termos:
             lista_caminho_usinas.append(unit)
             if(unit.locked[t] == False):
+                #if(flag_debug):
+                #    print("FALSE: t: ", t, " unit: ", unit.nome, " ger: ", unit.geracoes[t], " dem: ", sistema_guloso.demanda_liquida[t], " locked: ", unit.locked)
                 if (sistema_guloso.demanda_liquida[t] > 0):
                     unit.commitment[t] = 1
                     ################# TON
@@ -95,25 +100,22 @@ def nova_solucao_gulosa(sistema_inicial):
                                 geracao = max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
                                 unit.geracoes[t] = geracao
             elif(unit.locked[t] == True):
-                #if(t>-1):
-                #    print("LT: t: ", t, " unit: ", unit.nome, " geracoes: ", unit.geracoes, " commit: ", unit.commitment, " locked: ", unit.locked, " dliq: ", sistema_guloso.demanda_liquida)
+                #if(flag_debug):
+                #    print("t: ", t, " unit: ", unit.nome, " ger: ", unit.geracoes[t], " dem: ", sistema_guloso.demanda_liquida[t])
                 if(unit.commitment[t] == 1):
-                    #print(geracao)
-                    #print(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]))
-                    #unit.geracoes[t] += max(min(unit.limite_superior, sistema_guloso.demanda_liquida[t]),unit.limite_inferior)
                     limite_geracao = unit.limite_superior if unit.geracoes[t] == 0 else unit.limite_superior - unit.limite_inferior
+
                     geracao = max(min(limite_geracao, sistema_guloso.demanda_liquida[t]),0)
-                    unit.geracoes[t] += geracao
+                    unit.geracoes[t] += geracao if unit.geracoes[t] < unit.limite_superior else 0
+                    #if(flag_debug):
+                    #    print("t: ", t, " unit: ", unit.nome, " ger: ", unit.geracoes[t], " dem: ", sistema_guloso.demanda_liquida[t])
                 else:
                     unit.geracoes[t] = 0
-
-            #if(t>-1):
-            #    print("t: ", t, " unit: ", unit.nome, " geracoes: ", unit.geracoes, " commit: ", unit.commitment, " locked: ", unit.locked, " dliq: ", sistema_guloso.demanda_liquida)
             sistema_guloso = verifica_resolve_inviabilidade(sistema_guloso, lista_caminho_usinas)
-            #print("t: ", t, " nome: ", unit.nome, " geracoes: ", unit.geracoes, " commit: ", unit.commitment, " locked: ", unit.locked)
-            #if(t == 2 and unit.nome == "g0"):
-            #    exit(1)
-
+        #if(t == 0 and flag_debug):
+        #    gera_log_informacoes(sistema_guloso)
+        #    print("ENTROU AQUI")
+        #    exit(1)
     return sistema_guloso
 
 

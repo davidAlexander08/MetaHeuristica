@@ -12,7 +12,6 @@ def leitura_json(arquivo):
     mapa_nome_objeto_termico = {}
     for bus in json_data["buses"]:
         print("Bus name:", bus["bus"])
-        exit(1)
         print("Load:", bus["load"])
         Demanda.extend(bus["load"])
         sistema_inicial.demanda = np.array(Demanda)
