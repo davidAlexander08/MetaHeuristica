@@ -4,7 +4,7 @@ from neometaheuristica.algoritmo_guloso import *
 from neometaheuristica.neighbour import *
 import pandas as pd
 
-def ILS(sistema_inicial, n_iter=30, especial = False):
+def ILS(sistema_inicial, n_iter=150, especial = False):
     sol_best = nova_solucao_gulosa(sistema_inicial, False)
     executa_solucao_pl(sol_best)
     sol_curr = copy.deepcopy(sol_best)

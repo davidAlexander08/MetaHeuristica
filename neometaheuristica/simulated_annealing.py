@@ -5,7 +5,7 @@ from neometaheuristica.neighbour import *
 import pandas as pd
 
 
-def simulated_annealing(sistema_inicial, T0=15000.0, alpha=0.9, n_iter=10, Tf = 100):
+def simulated_annealing(sistema_inicial, T0=15000.0, alpha=0.9, n_iter=50, Tf = 100):
     sol_best = nova_solucao_gulosa(sistema_inicial, ativa_random = True)
     sol_curr = copy.deepcopy(sol_best)
     print("#################")

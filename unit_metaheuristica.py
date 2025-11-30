@@ -34,7 +34,7 @@ def plota(df_fim, titulo):
         height=500
     )
 
-    fig.write_html(f"evolucao_custo_ILS.html", include_plotlyjs='cdn')
+    fig.write_html(f"evolucao_{titulo}.html", include_plotlyjs='cdn')
     print("Plot saved as sa_best_cost.html")
 
 
@@ -43,10 +43,9 @@ def plota_SA(df_fim, titulo):
     # Create Plotly line plot
     fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=df_fim["Iteracao"],
+        x=df_fim["Iteracao"].astype(str) +"_"+ df_fim["Temperatura"].round(0).astype(str),
         y=df_fim["Custo_Total"],
         mode='lines+markers',
-        text=df_fim["Temperatura"].astype(str),
         line=dict(width=3, color='royalblue'),
         marker=dict(size=8),
         name="Best Cost"
@@ -62,9 +61,9 @@ def plota_SA(df_fim, titulo):
         height=500
     )
 
-    fig.write_html(f"evolucao_custo_ILS.html", include_plotlyjs='cdn')
+    fig.write_html(f"evolucao_{titulo}.html", include_plotlyjs='cdn')
     print("Plot saved as sa_best_cost.html")
-    
+
 
 arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/output_instance.json"
 #arquivo = "C:/Users/testa/Documents/git/MetaHeuristica/instancias/instancia_teste_TON.json"
@@ -93,21 +92,10 @@ df_generation = pd.DataFrame(data)
 df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
 df_generation["DEMANDA"] = solucao.demanda
 print(df_generation)
-exit(1)
-
-solucao, df_fim = simulated_annealing(sistema_inicial)
-print("SOLUCAO SIMULATED ANEELING")
-print("Objective (total cost) via SA:", solucao.total_cost)
-print(df_fim)
-plota_SA(df_fim, "Evolução S.A.")
-data = {termica.nome: termica.geracoes for termica in solucao.geradores}
-df_generation = pd.DataFrame(data)
-df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
-df_generation["DEMANDA"] = solucao.demanda
-print(df_generation)
-exit(1)
+#exit(1)
 
 
+######### VNS
 solucao, df_fim = VNS(sistema_inicial)
 print("SOLUCAO SIMULATED ANEELING")
 print("Objective (total cost) via VNS:", solucao.total_cost)
@@ -119,9 +107,9 @@ df_generation = pd.DataFrame(data)
 df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
 df_generation["DEMANDA"] = solucao.demanda
 print(df_generation)
-exit(1)
+#exit(1)
 
-
+########## ILS ESPECIAL
 solucao, df_fim = ILS(sistema_inicial, True)
 print("SOLUCAO SIMULATED ANEELING")
 print("Objective (total cost) via ILS Especial:", solucao.total_cost)
@@ -133,3 +121,16 @@ df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
 df_generation["DEMANDA"] = solucao.demanda
 print(df_generation)
 exit(1)
+
+######### S.A.
+solucao, df_fim = simulated_annealing(sistema_inicial)
+print("SOLUCAO SIMULATED ANEELING")
+print("Objective (total cost) via SA:", solucao.total_cost)
+print(df_fim)
+plota_SA(df_fim, "Evolução S.A.")
+data = {termica.nome: termica.geracoes for termica in solucao.geradores}
+df_generation = pd.DataFrame(data)
+df_generation["SOMA_GERACAO"] = df_generation.sum(axis=1)
+df_generation["DEMANDA"] = solucao.demanda
+print(df_generation)
+#exit(1)

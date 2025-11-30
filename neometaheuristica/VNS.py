@@ -4,7 +4,7 @@ from neometaheuristica.algoritmo_guloso import *
 from neometaheuristica.neighbour import *
 import pandas as pd
 
-def VNS(sistema_inicial, n_iter=3):
+def VNS(sistema_inicial, n_iter=150):
     sol_best = solucao_gulosa(sistema_inicial)
     gera_log_unitcommitment(sol_best)
     executa_solucao_pl(sol_best)    
@@ -28,7 +28,7 @@ def VNS(sistema_inicial, n_iter=3):
         grau = 1
         for a in range(8):
             for i in range(10):
-                sol_new = gera_vizinho_VNS(copy.deepcopy(sol_curr), grau)
+                sol_new = gera_vizinho_VNS(copy.deepcopy(sol_curr))
                 delta_fob = sol_new.total_cost - sol_best.total_cost   
             if delta_fob < 0:
                 break
